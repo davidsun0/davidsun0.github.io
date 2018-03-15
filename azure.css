@@ -1,11 +1,11 @@
 a{
-    color: #606060;
+    color: #404040;
     font-family: sans-serif;
 }
 
 p{
     font-family: sans-serif;
-    line-height: 1.2;
+    line-height: 1.5;
 }
 
 h1, h2, h3, h4, h5, h6{
@@ -18,7 +18,6 @@ li{
 }
 
 body{
-    padding: 0;
     margin: 0;
     background-color: #F8F8F8;
 }
@@ -27,56 +26,118 @@ br{
     line-height: 2;
 }
 
+hr{
+    border-left: none;
+    border-right: none;
+    border-bottom: none;
+    border-top: thin solid #808080;
+    width: 90%;
+    text-align: center;
+}
+
 #container{
-    width: 60%;
+    width: 90%;
     margin: auto;
+}
+@media only screen and (min-width: 1000px){
+    #container{
+        width: 60%;
+        margin: auto;
+    }
 }
 
 #title{
     width: 100%;
-    margin-top: 1%;
+    margin-top: 0;
+}
+@media only screen and (min-width: 1000px){
+    #title{
+        margin-top: 4em;
+    }
 }
 #title h1{
+    font-size: 250%;
     margin-bottom: 0;
     margin-left: 10pt;
     font-family: sans-serif;
 }
+#title hr{
+    width: 100%;
+    border-left: none;
+    border-right: none;
+    border-bottom: none;
+    border-top: thin solid #808080;
+}
 
 #content{
-    width: 70%;
-    float: left;
-    padding-left: 40px;
-    padding-right: 40px;
+    width: 90%;
+    margin: auto;
 }
-#content h2{
-    margin-bottom: 0;
+@media only screen and (min-width: 1000px){
+    #content{
+        width: 70%;
+        float: left;
+        margin-left: 2em;
+        margin-right: 2em;
+    }
+}
+
+#content h1, h2, h3, h4, h5, h6{
+    margin-bottom: -0.5em;
     font-family: sans-serif;
 }
 
 #rightnav{
-    margin-left: auto;
-    border-left: thin solid #808080;
-    padding: 20px;
-    float: left;
+    display: none;
 }
-#rightnav a:hover{
-    color: #202020;
+@media only screen and (min-width: 1000px){
+    #rightnav{
+        display: block;
+        margin-left: auto;
+        border-left: thin solid #808080;
+        padding: 1.5em;
+        padding-top: 1em;
+        float: left;
+    }
+    #rightnav a:hover{
+        color: #202020;
+    }
+    #rightnav br{
+        line-height: 1.5;
+    }
 }
 
 #topnav{
+    width: 100%;
     background-color: #0050D0;
-    margin: 0;
-    padding-left: 20%;
-    padding-right: 10%;
     padding-top: 10px;
     padding-bottom: 8px;
+    margin-bottom: 1em;
+    /* padding-left: 10px; */
 }
 #topnav a{
     color: #F8F8F8;
     text-decoration: none;
-    margin-left: 10px;
-    margin-right: 10px;
+    font-weight: bold;
+    margin-left: 2em;
 }
-#topnav a:hover{
-    text-decoration: underline;
+@media only screen and (min-width: 1000px){
+    #topnav{
+        position: fixed;
+        top: 0;
+        margin: 0;
+        padding-left: 20%;
+        padding-right: 10%;
+    }
+    #topnav a:hover{
+        text-decoration: underline;
+    }
+    
+    /* make internal links avoid clipping with top nav */
+    :target:before {
+        content: "";
+        display: block;
+        height: 2em;
+        margin: -2em 0 0;
+    }
 }
