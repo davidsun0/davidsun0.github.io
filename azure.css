@@ -1,25 +1,48 @@
-a{
-    color: #404040;
-    font-family: sans-serif;
-}
-
-p{
-    font-family: sans-serif;
-    line-height: 1.5;
-}
-
-h1, h2, h3, h4, h5, h6{
-    font-family: sans-serif;
-    color: #101010;
-}
-
-li{
-    font-family: sans-serif;
+:root{
+    scroll-behavior: smooth;
 }
 
 body{
     margin: 0;
     background-color: #F8F8F8;
+    font-family: 'Roboto', sans-serif;
+    height: 100%;
+    background: #666;
+    font-size: 16px;
+}
+
+a{
+    color: #4040A0;
+    text-decoration: underline;
+}
+a:hover{
+    text-decoration: none;
+}
+
+h1, h2, h3, h4, h5, h6{
+    color: #404040;
+}
+
+h1, h2{
+    /* text-shadow: 2px 2px 4px #AAA; */
+    filter: drop-shadow(3px 3px 3px rgba(0,0,0,0.3));
+}
+
+h1{
+    font-size: 2em;
+}
+
+h2{
+    font-size: 1.5em;
+}
+
+p{
+    line-height: 2;
+    max-width: 40em;  /* limits lines to ~90 characters */
+}
+
+li{
+    line-height: 1.5;
 }
 
 br{
@@ -27,117 +50,273 @@ br{
 }
 
 hr{
+    /* makes hr's only one horizontal line */
     border-left: none;
     border-right: none;
     border-bottom: none;
     border-top: thin solid #808080;
+    
     width: 90%;
     text-align: center;
 }
 
-#container{
-    width: 90%;
-    margin: auto;
+/* highlight colors */
+::selection {
+    background: #BBDEFB;
 }
-@media only screen and (min-width: 1000px){
-    #container{
-        width: 60%;
-        margin: auto;
-    }
+::-moz-selection {
+    background-color: #BBDEFB;
 }
 
-#title{
+#topbar{
     width: 100%;
-    margin-top: 0;
+    background: #0050D0;
+    filter: drop-shadow(0 5px 10px rgba(0,0,0,0.3));
 }
-@media only screen and (min-width: 1000px){
-    #title{
-        margin-top: 4em;
-    }
-}
-#title h1{
-    font-size: 250%;
-    margin-bottom: 0;
-    margin-left: 10pt;
-    font-family: sans-serif;
-}
-#title hr{
-    width: 100%;
-    border-left: none;
-    border-right: none;
-    border-bottom: none;
-    border-top: thin solid #808080;
-}
-
-#content{
-    width: 90%;
-    margin: auto;
-}
-@media only screen and (min-width: 1000px){
-    #content{
-        width: 70%;
-        float: left;
-        margin-left: 2em;
-        margin-right: 2em;
-    }
-}
-
-#content h1, h2, h3, h4, h5, h6{
-    margin-bottom: -0.5em;
-    font-family: sans-serif;
-}
-
-#rightnav{
-    display: none;
-}
-@media only screen and (min-width: 1000px){
-    #rightnav{
-        display: block;
-        margin-left: auto;
-        border-left: thin solid #808080;
-        padding: 1.5em;
-        padding-top: 1em;
-        float: left;
-    }
-    #rightnav a:hover{
-        color: #202020;
-    }
-    #rightnav br{
-        line-height: 1.5;
-    }
-}
-
 #topnav{
-    width: 100%;
-    background-color: #0050D0;
-    padding-top: 10px;
-    padding-bottom: 8px;
-    margin-bottom: 1em;
-    /* padding-left: 10px; */
+    width: 90%;
+    margin: auto;
+    padding-top: 1em;
+    padding-bottom: 1em;
 }
 #topnav a{
     color: #F8F8F8;
-    text-decoration: none;
     font-weight: bold;
-    margin-left: 2em;
+    margin-right: 1em;
+    text-decoration: none;
 }
-@media only screen and (min-width: 1000px){
-    #topnav{
+
+@media only screen and (min-width: 840px){
+    #topbar{
+        /* attach the nav bar to the top of the screen */
         position: fixed;
         top: 0;
         margin: 0;
         padding-left: 20%;
         padding-right: 10%;
+        z-index: 100;
+        margin-bottom: 3em;
     }
-    #topnav a:hover{
-        text-decoration: underline;
+    #topnav{
+        width: 100%;
+    }
+    #topnav a{
+        margin-right: 2em;
     }
     
     /* make internal links avoid clipping with top nav */
     :target:before {
         content: "";
         display: block;
-        height: 2em;
-        margin: -2em 0 0;
+        height: 2.5em;
+        margin: -2.5em 0 0;
     }
 }
+
+#container{
+    width: 100%;
+    
+    /* creates a drop shadow over the footer */
+    filter: drop-shadow(0 2px 10px rgba(0,0,0,0.3));
+    z-index: 1;
+}
+
+.band{
+    padding: 1em 10% 1em 10%;
+    background: #F8F8F8;
+}
+
+.band:nth-child(even){
+    background: #E0E0E0;
+}
+
+@media only screen and (min-width: 840px){
+    .band{
+        padding-left: 20%;
+        padding-right: 20%;
+    }
+}
+
+.cardlist{
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    margin-right: -2em;
+}
+
+.cardlink{
+    text-decoration: none;
+}
+
+.cardlist > .card{
+    flex: 1 1 28%;
+}
+
+.card{
+    min-width: 200px;
+    max-width: 300px;
+    overflow: hidden;
+    height: 10em;
+    border-radius: 8px;
+    filter: drop-shadow(4px 4px 4px rgba(0,0,0,0.3));
+    margin: 0 2em 2em 0;
+    background: #F8F8F8;
+    position: relative;
+}
+
+/* display only 4 cards on medium devices */
+@media only screen and (max-width: 840px){
+    .card:nth-child(n+5){
+        display: none;
+    }
+}
+
+/* display only 3 cards on phones */
+@media only screen and (max-width: 480px){
+    .card:nth-child(n+4){
+        display: none;
+    }
+}
+
+.thumbnail{
+    background: #111;
+    height: 50%;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    /* for rendering bug in chrome */
+    border-radius: 8px 8px 0 0;
+}
+
+.thumbnail > img{
+    width: 100%;
+    top: -50%;
+}
+
+.description{
+    text-overflow: ellipsis;
+}
+
+.description p{
+    line-height: 1.5;
+    font-size: 90%;
+    color: #444;
+    margin: 0.5em;
+    text-decoration: none;
+}
+
+.description br{
+    line-height: 1;
+}
+
+.fade{
+    background: linear-gradient(rgba(255, 255, 255, 0), rgba(255, 255, 255, 1));
+    height: 30%;
+    width: 100%;
+    position: absolute;
+    bottom: 0;
+}
+
+.action{
+    background: #0050D0;
+    border-radius: 8px;
+    padding: 0.8em;
+    color: #F8F8F8;
+    float: right;
+    text-decoration: underline;
+    /* box-shadow: 8px 8px 16px #AAA; */
+    filter: drop-shadow(4px 4px 4px rgba(0,0,0,0.3));
+}
+
+.action::after{
+    clear: right;
+}
+
+.option{
+    background: #DDD;
+    color: #444;
+}
+
+.option > a{
+    color: #444;
+    text-decoration: none;
+}
+
+#titleBand{
+    background: url("math_snow-min.jpg");
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: bottom;
+    position: relative;
+    text-align: center;
+    padding: 0;
+    height: 15em;
+    overflow: hidden;
+}
+
+#titleText{
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translate(-50%, 0);
+    margin: auto;
+    font-size: 72px;
+    font-variant: small-caps;
+    font-weight: bold;
+    margin-bottom: 0.25em;
+    color: #FFF;
+    text-shadow: none;
+    filter: drop-shadow(5px 5px 5px rgba(0,0,0,0.3));
+    -webkit-text-stroke-width: 2px;
+    -webkit-text-stroke-color: #0050D0;
+}
+
+@media only screen and (min-width: 480px){
+    #titleText{
+        transform: translate(0, 0);
+        font-size: 100px;
+        position: absolute;
+        left: 10%;
+    }
+}
+
+@media only screen and (min-width: 840px){
+    #titleBand{
+        height: 25em;
+        background-position: 50% 65%;
+    }
+    #titleText{
+        left: 20%;
+    }
+}
+
+footer {
+    padding: 0 10% 0 10%;
+    min-height: 2em;
+    color: #E0E0E0;
+    z-index: -10;
+}
+
+@media only screen and (min-width: 840px){
+    footer {
+        padding: 0 20% 0 20%;
+    }
+}
+
+footer hr{
+    width: 100%;
+    border-top: thin solid #B0B0B0;
+}
+
+footer > h1,
+footer > h2,
+footer > h3,
+footer > h4,
+footer > h5,
+footer > h6{
+    color: #F0F0F0;
+    text-shadow: none;
+}
+
