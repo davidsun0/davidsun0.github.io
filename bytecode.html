@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<head>
+<meta charset="utf-8">
+
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#0050D0">
+
+<meta name="author" content="David Sun">
+<link rel="stylesheet" type="text/css" href="azure.css">
+<link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
+<link rel="icon" type="image/png" href="favicon-32x32.png" sizes="32x32">
+<link rel="icon" type="image/png" href="favicon-16x16.png" sizes="16x16">
+<title>Compiling for the Java Virtual Machine</title>
+</head>
+
+<body>
+<div id="container">
+<section id="body">
+<!-- body -->
+<div><svg width="3em" height="3em" style="float:left; vertical-align:middle;            padding-right: 1em">            <a href="index.html">            <rect x="0" y="0" width="3em" height="3em" rx="0.5em" ry="0.5em"/>            </a>            </svg><h1>Compiling for the Java Virtual Machine</h1></div>
+<h2>Overview</h2>
+<p>
+The JVM is a bytecode virtual machine.
+</p>
+<p>
+Similar to assembly, but simpler.
+</p>
+<p>
+Local variables and the stack
+</p>
+<h2>Class File Format</h2>
+<div class="codeBlock"><code>CA FE BA BE     java magic number
+00 00 00 37     java version 55.0 (java 11)
+XX XX           constant pool length + 1
+
+constant pool
+
+00 21           extendable (not final) and public
+XX XX           pool index of class name (classref)
+00 00           implements zero interfaces
+00 00           zero class fields
+XX XX           number of methods
+
+methods
+
+00 00           zero attributes
+</code></div>
+<h2>Constant Pool Table</h2>
+<h2>Method Format</h2>
+<div class="codeBlock"><code>00 09           public static
+XX XX           pool index of function name
+XX XX           pool index of function signature
+00 01           attribute size of 1: code attribute
+XX XX           pool index of &quot;Code&quot; (utf8)
+XX XX XX XX     size of function
+XX XX           maximum stack size
+XX XX           maximum number of locals used
+
+source bytecode (length in bytes is code size)
+
+00 00       zero exceptions
+
+stack map table 
+</code></div>
+<h2>Stack Map Table and Frames</h2>
+
+<h1>Additional notes</h1>
+<h2>Method Names</h2>
+<p>
+<code class="inlineCode">&lt;clinit&gt;</code> is reserved for the static initializer. It must be <code class="inlineCode">static void</code> and
+take no arguments.
+</p>
+<p>
+A method may not have any of <code class="inlineCode">&lt;</code>, <code class="inlineCode">&gt;</code>, or <code class="inlineCode">;</code> in its name.
+</section>
+<br>
+<hr>
+<p><a href="index.html">Home</a></p>
+<p>Last updated on 2020-01-18</p></div>
+</body>
+</html>
