@@ -16,14 +16,15 @@
 <body>
 <div id="container">
 <section id="body">
-<h1>Creating JVM Classes at Runtime</h1>
+<!-- body -->
+<div><svg width="3em" height="3em" style="float:left; vertical-align:middle;            padding-right: 1em">            <a href="index.html">            <rect x="0" y="0" width="3em" height="3em" rx="0.5em" ry="0.5em"/>            </a>            </svg><h1>Creating JVM Classes at Runtime</h1></div>
 <p>
 This is how Lateral Lisp compiles at runtime.
 </p>
 <h2>Java Class Loaders</h2>
 <p>
 The java.lang.ClassLoader class can allow new classes to be loaded at runtime.
-This can be used to load code from a network, or in Lateral&#x27;s case, to compile
+This can be used to load code from a network, or in Lateral's case, to compile
 new user defined functions.
 </p>
 <p>
@@ -35,7 +36,7 @@ functionality while running.
 The bytes of a valid JVM class must be loaded into a byte array.
 </p>
 <h2>Code</h2>
-<div class="codeblock"><code>class MyClassLoader extends ClassLoader {
+<div class="codeBlock"><code>class MyClassLoader extends ClassLoader {
     public Class&lt;?&gt; defineClass(byte[] bytes) {
          return defineClass(null, bytes, 0, bytes.length);
     }
@@ -56,7 +57,11 @@ collector.
 </p>
 <h2>Sources</h2>
 <p>
-    <a href="https://www.baeldung.com/java-classloaders">    https://www.baeldung.com/java-classloaders</a></section>
-</div>
+<a href="https://www.baeldung.com/java-classloaders">https://www.baeldung.com/java-classloaders</a>
+</section>
+<br>
+<hr>
+<p><a href="index.html">Home</a></p>
+<p>Last updated on 2020-01-18</p></div>
 </body>
 </html>

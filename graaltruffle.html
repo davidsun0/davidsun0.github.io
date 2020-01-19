@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<head>
+<meta charset="utf-8">
+
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#0050D0">
+
+<meta name="author" content="David Sun">
+<link rel="stylesheet" type="text/css" href="azure.css">
+<link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
+<link rel="icon" type="image/png" href="favicon-32x32.png" sizes="32x32">
+<link rel="icon" type="image/png" href="favicon-16x16.png" sizes="16x16">
+<title>Creating a Language with Graal + Truffle</title>
+</head>
+
+<body>
+<div id="container">
+<section id="body">
+<!-- body -->
+<svg width="3em" height="3em" style="float:left; vertical-align:middle;            padding-right: 1em">            <a href="index.html">            <rect x="0" y="0" width="3em" height="3em" rx="0.5em" ry="0.5em"/>            </a>            </svg><h1 class="title">Creating a Language with Graal + Truffle</h1>
+<h2>Resources Used</h2>
+<h3>One VM to Rule Them All (Talk by Oracle)</h3><p>
+Introduction to Truffle and basic tutorial on its usage with Simple Language
+</p>
+<ul><li><a href="https://www.youtube.com/watch?v=FJY96_6Y3a4">One VM to Rule Them All, One VM to Bind Them</a>
+</li><li><a href="https://lafo.ssw.uni-linz.ac.at/pub/papers/2016_PLDI_Truffle.pdf">One VM to Rule Them All Slides (PDF)</a>
+</li></ul>
+<h3>Language Implementations in Truffle</h3>
+<ul><li><a href="http://cesquivias.github.io/tags/truffle.html">Mumbler Blog Posts</a>
+</li><li><a href="https://github.com/cesquivias/mumbler">Mumbler (Github)</a>
+</li><li><a href="https://epub.jku.at/obvulihs/content/pageview/508383">TruffleClojure</a>
+</li><li><a href="http://ssw.jku.at/General/Staff/ManuelRigger/thesis.pdf">Truffle/C (PDF)</a>
+</li></ul>
+<p>
+Mumbler is a simple dialect of Lisp made to demonstrate Truffle's features.
+</p>
+<h3>Other Reading</h3>
+<ul><li><a href="https://blog.plan99.net/graal-truffle-134d8f28fb69">Graal & Truffle</a>
+</li><li><a href="https://medium.com/graalvm/graalvm-ten-things-12d9111f307d">Top 10 Things to do with GraalVM</a>
+</li></ul>
+<h3>Reference</h3>
+<ul><li><a href="https://www.graalvm.org/truffle/javadoc/">Truffle Javadoc</a>
+</li></ul>
+<h1>Truffle Notes</h1>
+<p>
+These notes are mainly based on the <a href="https://www.youtube.com/watch?v=FJY96_6Y3a4">One VM to Rule Them All, One VM to Bind Them</a>
+talk. The talk is focused on <a href="simple.html">Simple Language</a>, which was created to
+demonstrate Truffle's features.
+</p>
+<p>
+All AST Nodes inherit from <span class="inlineCode">com.oracle.truffle.api.nodes.Node</span>
+<ul><li><span class="inlineCode">Node</span> provides basic AST manipulation functionality (get parent, get children)
+</li></ul></p>
+<h2>Implementing a new AST node: SLIfNode</h2>
+<p>
+Example: implementing an if node
+</p>
+<p>
+Source code: <span class="inlineCode">com.oracle.truffle.sl.nodes.controlflow.SLIfNode</span>
+</p>
+<p>
+The node has three children: one expression node and two statement nodes.
+The expression node is evaluated first, and then one of the two statement nodes will
+be evaluated after that.
+</p>
+<ul><li>Create three fields in the <span class="inlineCode">SLIfNode</span> class, one for each child
+</li><li>Annotate each child with <span class="inlineCode">@Child</span>
+</li><li>Write a constructor
+</li><li>Implement logic in <span class="inlineCode">ifNode.executeVoid(VirtualFrame)</span>
+</li></ul>
+<h3>Increasing perfomance via profiling</h3>
+<p>
+Implement branch prediction with <span class="inlineCode">com.oracle.truffle.api.profiles.ConditionProfile</span>
+by wrapping evaluation of the condition node in <span class="inlineCode">conditionProfile.profile()</span>.
+</p>
+<p>
+Initialize an instance with <span class="inlineCode">ConditionProfile.createCountingProfile()</span>
+</p>
+<p>
+Use Truffle's annotations to automatically generate this code: Annotate the class to provide
+information about its children.
+</p>
+<p>
+For example, <span class="inlineCode">SLAddNode</span> performs addition on a left and right child.
+<div class="codeBlock"><code>@NodeChildren({@NodeChild(&quot;leftNode&quot;), @NodeChild(&quot;rightNode&quot;)})
+public class SLAddNode extends SLExpressionNode {
+
+    @Specialization    
+    long add(long left, long right) {
+        return left + right;
+    }
+
+    ...
+</code></div>
+<h2>AST Node Optimization: Specializations</h2>
+<p>
+Continuing from the previous section, specializations can be used to get performance
+increases. SimpleLanguage has arbitrary precision integers (as in Java's BigInteger),
+so this optimization will be performed if both arguments fit in a long.
+</p>
+<p>
+However, we can use <span class="inlineCode">Math.addExact()</span>, which throws an <span class="inlineCode">ArithmeticException</span> if the addition
+overflows. When the overflow occurs, we can retry with BigInteger arithmetic.
+</p>
+<div class="codeBlock"><code>    ...
+
+    @Specialization(rewriteOn = ArithmeticException.class)
+    long add(long left, long right) {
+        return Math.addExact(left, right);
+    }
+
+    @Specialization
+    BigInteger add(BigInteger left, BigInteger, right) {
+        return left.add(right);
+    }
+
+    ...
+</code></div>
+<p>
+A specialization can rewrite on multiple exceptions. After rewriting because of an
+exception, the next specialization can throw an exception and delegate to the next one.
+</p>
+<p>
+Note: Specializations are attempted in order of the source code. In this example, the long
+version is attempted before the BigInteger version. If multiple specializations are valid
+for the given inputs, the first one will be performed.
+</p>
+<p>
+Furthermore, there needs to be an implicit
+conversion from long to BigInteger declared in the language's type system.
+For SimpleLanguage, this is in <span class="inlineCode">com.oracle.truffle.sl.SLTypes.java</span>.
+</p>
+<p>
+To overload the add operator to work with Strings, simply write a specialization that takes
+Strings as arguments. SimpleLanugage's add performs string concatenation if one of the
+arguments is a String. To prevent integers from being concatenated as strings, write a type
+gaurd.
+</p>
+<div class="codeBlock"><code>    ...
+
+    @Specialization(gaurds = &quot;isString(left, right)&quot;)
+    String add(Object left, Object right) {
+        return &quot;&quot; + left + right;
+    }
+
+    static boolean isString(Object left, Object right) {
+        return left instanceof String || right instanceof String;
+    }
+}
+</code></div>
+<p>
+If no specializations match or if gaurds prevent any specializations match, Truffle will
+automatically throw a type error.
+</p>
+<h2>Implementing expressions: SLExpressionNode</h2>
+<ul><li>Can provide <span class="inlineCode">executeLong</span>, <span class="inlineCode">executeBoolean</span>, etc for performance speedups to avoid
+interpreter type unboxing (e.g. Java's <span class="inlineCode">bool</span> vs <span class="inlineCode">Boolean</span>)
+</li></ul>
+<h2>Implementing code blocks: SLBlockNode</h2>
+<p>
+BlockNode contains a block of code and evaluates every child.
+</p>
+<ul><li>Create a final array of SLStatementNode
+</li><li>Annotate with <span class="inlineCode">@Children</span>
+</li></ul>
+<div class="codeBlock"><code>@ExplodeLoop
+@Override
+public void executeVoid(VirtualFrame frame) {
+    for (SLStatementNode bodyNode : bodyNodes) {
+        bodyNode.executeVoid(frame);
+    }
+}
+</code></div>
+<ul><li><span class="inlineCode">@ExplodeLoop</span> causes Truffle to unroll the loop instead of iterating over bodyNodes
+</li><li>This is possible because bodyNodes is final, so the number of iterations is known
+</li></ul>
+<h2>Control through multiple execution frames</h2>
+<p>
+In SLReturnNode, throw a <span class="inlineCode">SLReturnException</span>, and catch this exception in the function
+AST node. Truffle removes the exception overhead.
+</section>
+<br>
+<hr>
+<p><a href="index.html">Home</a></p>
+<p>Last updated on 2020-01-19</p></div>
+</body>
+</html>

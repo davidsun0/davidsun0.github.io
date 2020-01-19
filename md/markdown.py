@@ -4,6 +4,9 @@ import html
 import re
 import sys
 
+import os
+import time
+
 from datetime import date
 
 headingMatcher = re.compile(r'^(#{1,6})(.*)')
@@ -24,7 +27,7 @@ paragraphMode = False
 listMode = False
 
 def codeEscape(match):
-    return f'<code class="inlineCode">{html.escape(match.group(1))}</code>'
+    return f'<span class="inlineCode">{html.escape(match.group(1))}</span>'
 
 def processInline(line):
     if codeMode:
@@ -53,7 +56,7 @@ def processLine(line):
 
         if not title and poundCount == 1:
             title = content;
-            return '<div>' + bigSquare + f'<h1>{content}</h1></div>'
+            return bigSquare + f'<h1 class="title">{content}</h1>'
         return f'<h{poundCount}>{content}</h{poundCount}>'
 
     # CODE BLOCK
@@ -67,10 +70,12 @@ def processLine(line):
     if line[:2] == '- ':
         res = '<ul><li>' if not listMode else '</li><li>'
         listMode = True
-        return res + line[2:]
+        return res + processInline(line[2:])
     elif listMode and line == '\n':
         listMode = False
         return '</li></ul>' + processLine(line)
+    elif listMode:
+        return processInline(line)
 
     # PARAGRAPH
     if not paragraphMode and not codeMode and line != '\n':
@@ -105,7 +110,8 @@ if __name__ == '__main__':
                 for pline in pageBody:
                     target.write(pline)
             elif tline == '<!-- footer -->\n':
-                target.write('<p>Last updated on ' +
-                        date.today().strftime('%Y-%m-%d') + '</p>')
+                mtime = os.stat(sourceName).st_mtime
+                lastChange = time.strftime('%Y-%m-%d', time.localtime(mtime))
+                target.write(f'<p>Last updated on {lastChange}</p>')
             else:
                 target.write(tline)
