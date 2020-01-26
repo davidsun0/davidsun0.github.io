@@ -10,9 +10,11 @@ import time
 from datetime import date
 
 headingMatcher = re.compile(r'^(#{1,6})(.*)')
-linkMatcher = re.compile(r'\[([^\]]+)\]\(([^\)]*)\)')
+linkMatcher = re.compile(r'\[(.+)\]\(([^\)]*)\)')
 # inline code regex
 codeMatcher = re.compile('`([^`]+)`')
+boldMatcher = re.compile('__(.+?)__')
+italicMatcher = re.compile('_(.+?)_')
 
 bigSquare = '<svg width="3em" height="3em" style="float:left; vertical-align:middle;\
             padding-right: 1em">\
@@ -27,21 +29,30 @@ paragraphMode = False
 listMode = False
 
 def codeEscape(match):
+    """Returns the HTML from a regex match of inline code"""
     return f'<span class="inlineCode">{html.escape(match.group(1))}</span>'
 
 def processInline(line):
+    """Creates HTML for a single line of markdown"""
     if codeMode:
         return html.escape(line)
+
+    # INLINE CODE
+    # inline code must be first because it html escapes its contents
+    line = codeMatcher.sub(codeEscape, line)
 
     # LINKS
     line = linkMatcher.sub(r'<a href="\2">\1</a>', line)
 
-    # INLINE CODE
-    line = codeMatcher.sub(codeEscape, line)
+    # BOLD
+    line = boldMatcher.sub(r'<b>\1</b>', line)
+    # ITALIC
+    line = italicMatcher.sub(r'<i>\1</i>', line)
 
     return line
 
 def processLine(line):
+    """Processes the structure of a markdown file one line at a time"""
     global paragraphMode
     global title
     global codeMode
@@ -54,10 +65,13 @@ def processLine(line):
         poundCount = len(headm.group(1))
         content = headm.group(2).strip();
 
+        idval = content
+        idval.replace(' ', '_')
+
         if not title and poundCount == 1:
             title = content;
-            return bigSquare + f'<h1 class="title">{content}</h1>'
-        return f'<h{poundCount}>{content}</h{poundCount}>'
+            return bigSquare + f'<h1 class="title" id="{idval}">{content}</h1>'
+        return f'<h{poundCount} id="{idval}">{content}</h{poundCount}>'
 
     # CODE BLOCK
     if line[:3] == '```':

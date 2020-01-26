@@ -1,28 +1,80 @@
-# Compiling Tail Recursive Functions
+# Implementing Tail Call Optimization
 
 ## Benefits of tail recursion
-Lateral Lisp has no for or while loops. For Lisps, it is often more natural
-to express looping with recursion.
+Lateral Lisp has no for or while loops. For Lateral, it is often more natural
+to express looping with recursion. This is because Lateral Lisp does not
+have variables like in C or Java. Functions only pass values and these values
+can't be changed.
+(This isn't true for all Lisps, or even most Lisps, but it
+makes writing a Lateral compiler much simpler.)
 
-Implementing recursion in the style of a language like C can be inefficient
-because an additional call frame needs to be added to the stack for every
-recurisve call.
+However, recursion can be expensive. Every time a new recursive call is made,
+a new stack frame needs to be allocated. A recursive function that calls itself
+too many times can cause a stack overflow and crash. In fact, this happened
+quite often in the early stages of Lateral's development.
 
 Tail call optimization allows a recursive call in the tail position to be
 implemented as a GOTO to the beginning of the function. No new frame needs to
-be allocated.
+be allocated, and there are also perfomance benefits as well.
 
-In fact, from a bytecode or assembly point of view, tail optimized recursion is
-identical to a while loop. If the base case is reached, the loop breaks.
-Otherwise, the code is repeated with new arguments.
+In fact, you could consider tail call optimization a compiler optimization which
+converts tail recursive functions into while loops.
 
 ## What is the tail position?
 
 Is a recursive call in the tail position? If the function returns the result of
 the call without any further processing, the function is in the tail position.
 
-In Lateral, functions can only have one function call in the body. This call
-must be in the tail position.
+```
+int factorial(int n) {
+    if (n <= 1) {
+        return 1;
+    } else {
+        return n * factorial(n - 1);
+    }
+}
+```
+
+The classic implementation of the factorial function would not be tail recursive.
+After the recursive call is done, it still needs to be multiplied by n.
+
+```
+int factorial(int n, int total) {
+    if (n <= 1) {
+        return total;
+    } else {
+        return factorial(n - 1, total * n);
+    }
+}
+
+int factorial(int n) {
+    return factorial(n, 1);
+}
+```
+
+The above function is tail recursive, and is more or less a direct translation
+of the equivalent Lisp code. This may not seem like a big change, and in fact may
+seem less intuitive. However, when all you have is a hammer everything looks like
+a nail and Lateral's hammer is recursion.
+
+In this form, the compiler can transform the factorial code into something like this:
+
+```
+int factorial(int n, int total) {
+    while (n > 1) {
+        total = total * n;
+        n = n - 1;
+    }
+    return total;
+}
+```
+
+Tada! The recursion has been optimized away!
+
+To be specific, this isn't exactly what happens. Notice how the behavior of factorial
+changes depending on whether `n = n-1` or `total = total * n` comes first. The generated
+bytecode assigns both values _simultaneously_ to preserve the output of the original
+code.
 
 ## Generating bytecode
 

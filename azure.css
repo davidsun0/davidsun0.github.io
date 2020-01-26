@@ -55,9 +55,9 @@ h3, h4, h5, h6{
 }
 
 p, li{
-    font-size: 1.2em;
-    line-height: 1.5;
-    max-width: 60em;  /* limits lines to ~90 characters */
+    font-size: 1.1em;
+    line-height: 1.4;
+    max-width: 40em;  /* limits lines to ~90 characters */
 }
 
 code{
@@ -65,15 +65,16 @@ code{
 }
 
 .inlineCode{
-    background: #E4E4E4;
-    padding: 0 5px 0 5px;
+    background: #E8E8E8;
+    padding: 0 3px 0 3px;
     word-wrap: break-word;
     /* font-size: 0.85em; */
 }
 
 .codeBlock{
     background: #DDD;
-    padding: 1em 5% 1em 5%;
+    background: #E8E8E8;
+    padding: 1em 2em 1em 2em;
     overflow: auto;
 }
 

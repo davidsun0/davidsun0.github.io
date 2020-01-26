@@ -3,10 +3,13 @@
 ## Resources Used
 
 ### One VM to Rule Them All (Talk by Oracle)
-Introduction to Truffle and basic tutorial on its usage with Simple Language
+Introduction to Truffle and basic tutorial on its usage with SimpleLanguage
 
 - [One VM to Rule Them All, One VM to Bind Them](https://www.youtube.com/watch?v=FJY96_6Y3a4)
-- [One VM to Rule Them All Slides (PDF)](https://lafo.ssw.uni-linz.ac.at/pub/papers/2016_PLDI_Truffle.pdf)
+- [One VM to Rule Them All Slides [PDF]](https://lafo.ssw.uni-linz.ac.at/pub/papers/2016_PLDI_Truffle.pdf)
+- [SimpleLanguage Github](https://github.com/graalvm/simplelanguage)
+- [My Notes on SimpleLanguage](simple.html)
+
 
 ### Language Implementations in Truffle
 
@@ -29,7 +32,7 @@ Mumbler is a simple dialect of Lisp made to demonstrate Truffle's features.
 # Truffle Notes
 
 These notes are mainly based on the [One VM to Rule Them All, One VM to Bind Them](https://www.youtube.com/watch?v=FJY96_6Y3a4)
-talk. The talk is focused on [Simple Language](simple.html), which was created to
+talk. The talk is focused on [SimpleLanguage](simple.html), which was created to
 demonstrate Truffle's features.
 
 ## Implementing Conditionals: SLIfNode
@@ -41,21 +44,27 @@ Example: implementing an if node
 
 Source code: `com.oracle.truffle.sl.nodes.controlflow.SLIfNode`
 
+### The Manual Way
+
 The node has three children: one expression node and two statement nodes.
 The expression node is evaluated first, and then one of the two statement nodes will
 be evaluated after that.
 
 - Create three fields in the `SLIfNode` class, one for each child
 - Annotate each child with `@Child`
-- Write a constructor
+- Write a SLIfNode constructor to set the three children
 - Implement logic in `ifNode.executeVoid(VirtualFrame)`
 
-### Increasing perfomance via profiling
+```
+public final class SLIfNode extends SLStatementNode {
+    @Child private SLExpressionNode conditionNode;
+    @Child private SLStatementNode thenNode;
+    @Child private SLStatementNode elseNode;
+    ...
+}
+```
 
-Implement branch prediction with `com.oracle.truffle.api.profiles.ConditionProfile`
-by wrapping evaluation of the condition node in `conditionProfile.profile()`.
-
-Initialize an instance with `ConditionProfile.createCountingProfile()`
+### With Truffle Annotations
 
 Use Truffle's annotations to automatically generate this code: Annotate the class to provide
 information about its children.
@@ -69,20 +78,36 @@ public class SLAddNode extends SLExpressionNode {
     long add(long left, long right) {
         return left + right;
     }
-
     ...
+}
 ```
+
+### Increasing perfomance via profiling
+
+Implement branch prediction with `com.oracle.truffle.api.profiles.ConditionProfile`:
+
+- create an instance with `ConditionProfile.createCountingProfile()` in the objects'
+initializer
+- wrap evaluation of the condition node in `conditionProfile.profile()`
 
 ## AST Node Optimization: Specializations
 
-Continuing from the previous section, specializations can be used to get performance
-increases. SimpleLanguage has arbitrary precision integers (as in Java's BigInteger),
-so this optimization will be performed if both arguments fit in a long.
+Specializations can increase language performance. For SimpleLanguage, even though it
+has arbitrary precision integers, in practice programs are much more likely to be working
+with small numbers. It would be a waste to use Java's BigInteger for all calculations.
 
-However, we can use `Math.addExact()`, which throws an `ArithmeticException` if the addition
-overflows. When the overflow occurs, we can retry with BigInteger arithmetic.
+Truffle allows SimpleLanguage's integers to be backed by long or BigInteger and it can
+automatically convert as needed. For this, we will need:
+- A function detailing the implicit conversion in the type system (`SLTypes`)
+- Special functions in arithmetic nodes which can handle long and BigInteger
+
+For the addition node, we first implement the logic for adding two long values.
+To upcast to BigInteger when necessary, we use `Math.addExact`, which will throw
+and ArithmeticException error when the addition overflows.
 
 ```
+@NodeChildren({@NodeChild("leftNode"), @NodeChild("rightNode")})
+public class SLAddNode extends SLExpressionNode {
     ...
 
     @Specialization(rewriteOn = ArithmeticException.class)
@@ -98,21 +123,18 @@ overflows. When the overflow occurs, we can retry with BigInteger arithmetic.
     ...
 ```
 
-A specialization can rewrite on multiple exceptions. After rewriting because of an
-exception, the next specialization can throw an exception and delegate to the next one.
+When the addition with longs fails with an ArithmeticException, the next specialization
+will be attempted. If that specialization has a rewrite, Truffle will then continue
+down the list of specializations (in the order of the source code).
 
-Note: Specializations are attempted in order of the source code. In this example, the long
-version is attempted before the BigInteger version. If multiple specializations are valid
-for the given inputs, the first one will be performed.
+Furthermore, the addition operator can be overloaded to take strings. In SimpleLanguage,
+addition with strings performs concatenation. To avoid concatenating two integers,
+we use the type system and gaurds to check the types of the arguments. (Note that in
+SimpleLanguage, integers cannot be automatically cast to strings).
 
-Furthermore, there needs to be an implicit
-conversion from long to BigInteger declared in the language's type system.
-For SimpleLanguage, this is in `com.oracle.truffle.sl.SLTypes.java`.
-
-To overload the add operator to work with Strings, simply write a specialization that takes
-Strings as arguments. SimpleLanugage's add performs string concatenation if one of the
-arguments is a String. To prevent integers from being concatenated as strings, write a type
-gaurd.
+To implement string concatenation with the + operator, simply write a specialization that takes
+Strings as arguments. The gaurd and isString function checks to see that at least one
+of the arguments is of type String.
 
 ```
     ...
@@ -163,4 +185,4 @@ AST node. Truffle removes the exception overhead.
 
 ## Local Variables and Frame Types
 
-//TODO
+//TODO 1:21:00

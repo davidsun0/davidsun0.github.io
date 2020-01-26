@@ -20,11 +20,14 @@
 <svg width="3em" height="3em" style="float:left; vertical-align:middle;            padding-right: 1em">            <a href="index.html">            <rect x="0" y="0" width="3em" height="3em" rx="0.5em" ry="0.5em"/>            </a>            </svg><h1 class="title">Creating a Language with Graal + Truffle</h1>
 <h2>Resources Used</h2>
 <h3>One VM to Rule Them All (Talk by Oracle)</h3><p>
-Introduction to Truffle and basic tutorial on its usage with Simple Language
+Introduction to Truffle and basic tutorial on its usage with SimpleLanguage
 </p>
 <ul><li><a href="https://www.youtube.com/watch?v=FJY96_6Y3a4">One VM to Rule Them All, One VM to Bind Them</a>
-</li><li><a href="https://lafo.ssw.uni-linz.ac.at/pub/papers/2016_PLDI_Truffle.pdf">One VM to Rule Them All Slides (PDF)</a>
+</li><li><a href="https://lafo.ssw.uni-linz.ac.at/pub/papers/2016_PLDI_Truffle.pdf">One VM to Rule Them All Slides [PDF]</a>
+</li><li><a href="https://github.com/graalvm/simplelanguage">SimpleLanguage Github</a>
+</li><li><a href="simple.html">My Notes on SimpleLanguage</a>
 </li></ul>
+
 <h3>Language Implementations in Truffle</h3>
 <ul><li><a href="http://cesquivias.github.io/tags/truffle.html">Mumbler Blog Posts</a>
 </li><li><a href="https://github.com/cesquivias/mumbler">Mumbler (Github)</a>
@@ -44,20 +47,21 @@ Mumbler is a simple dialect of Lisp made to demonstrate Truffle's features.
 <h1>Truffle Notes</h1>
 <p>
 These notes are mainly based on the <a href="https://www.youtube.com/watch?v=FJY96_6Y3a4">One VM to Rule Them All, One VM to Bind Them</a>
-talk. The talk is focused on <a href="simple.html">Simple Language</a>, which was created to
+talk. The talk is focused on <a href="simple.html">SimpleLanguage</a>, which was created to
 demonstrate Truffle's features.
 </p>
+<h2>Implementing Conditionals: SLIfNode</h2>
 <p>
 All AST Nodes inherit from <span class="inlineCode">com.oracle.truffle.api.nodes.Node</span>
 <ul><li><span class="inlineCode">Node</span> provides basic AST manipulation functionality (get parent, get children)
 </li></ul></p>
-<h2>Implementing a new AST node: SLIfNode</h2>
 <p>
 Example: implementing an if node
 </p>
 <p>
 Source code: <span class="inlineCode">com.oracle.truffle.sl.nodes.controlflow.SLIfNode</span>
 </p>
+<h3>The Manual Way</h3>
 <p>
 The node has three children: one expression node and two statement nodes.
 The expression node is evaluated first, and then one of the two statement nodes will
@@ -65,17 +69,10 @@ be evaluated after that.
 </p>
 <ul><li>Create three fields in the <span class="inlineCode">SLIfNode</span> class, one for each child
 </li><li>Annotate each child with <span class="inlineCode">@Child</span>
-</li><li>Write a constructor
+</li><li>Write a SLIfNode constructor to set the three children
 </li><li>Implement logic in <span class="inlineCode">ifNode.executeVoid(VirtualFrame)</span>
 </li></ul>
-<h3>Increasing perfomance via profiling</h3>
-<p>
-Implement branch prediction with <span class="inlineCode">com.oracle.truffle.api.profiles.ConditionProfile</span>
-by wrapping evaluation of the condition node in <span class="inlineCode">conditionProfile.profile()</span>.
-</p>
-<p>
-Initialize an instance with <span class="inlineCode">ConditionProfile.createCountingProfile()</span>
-</p>
+<h3>With Truffle Annotations</h3>
 <p>
 Use Truffle's annotations to automatically generate this code: Annotate the class to provide
 information about its children.
@@ -89,20 +86,37 @@ public class SLAddNode extends SLExpressionNode {
     long add(long left, long right) {
         return left + right;
     }
-
     ...
+}
 </code></div>
+<h3>Increasing perfomance via profiling</h3>
+<p>
+Implement branch prediction with <span class="inlineCode">com.oracle.truffle.api.profiles.ConditionProfile</span>:
+</p>
+<ul><li>create an instance with <span class="inlineCode">ConditionProfile.createCountingProfile()</span> in the objects'
+initializer
+</li><li>wrap evaluation of the condition node in <span class="inlineCode">conditionProfile.profile()</span>
+</li></ul>
 <h2>AST Node Optimization: Specializations</h2>
 <p>
-Continuing from the previous section, specializations can be used to get performance
-increases. SimpleLanguage has arbitrary precision integers (as in Java's BigInteger),
-so this optimization will be performed if both arguments fit in a long.
+Specializations can increase language performance. For SimpleLanguage, even though it
+has arbitrary precision integers, in practice programs are much more likely to be working
+with small numbers. It would be a waste to use Java's BigInteger for all calculations.
 </p>
 <p>
-However, we can use <span class="inlineCode">Math.addExact()</span>, which throws an <span class="inlineCode">ArithmeticException</span> if the addition
-overflows. When the overflow occurs, we can retry with BigInteger arithmetic.
+Truffle allows SimpleLanguage's integers to be backed by long or BigInteger and it can
+automatically convert as needed. For this, we will need:
+<ul><li>A function detailing the implicit conversion in the type system (<span class="inlineCode">SLTypes</span>)
+</li><li>Special functions in arithmetic nodes which can handle long and BigInteger
+</li></ul></p>
+<p>
+For the addition node, we first implement the logic for adding two long values.
+To upcast to BigInteger when necessary, we use <span class="inlineCode">Math.addExact</span>, which will throw
+and ArithmeticException error when the addition overflows.
 </p>
-<div class="codeBlock"><code>    ...
+<div class="codeBlock"><code>@NodeChildren({@NodeChild(&quot;leftNode&quot;), @NodeChild(&quot;rightNode&quot;)})
+public class SLAddNode extends SLExpressionNode {
+    ...
 
     @Specialization(rewriteOn = ArithmeticException.class)
     long add(long left, long right) {
@@ -117,24 +131,20 @@ overflows. When the overflow occurs, we can retry with BigInteger arithmetic.
     ...
 </code></div>
 <p>
-A specialization can rewrite on multiple exceptions. After rewriting because of an
-exception, the next specialization can throw an exception and delegate to the next one.
+When the addition with longs fails with an ArithmeticException, the next specialization
+will be attempted. If that specialization has a rewrite, Truffle will then continue
+down the list of specializations (in the order of the source code).
 </p>
 <p>
-Note: Specializations are attempted in order of the source code. In this example, the long
-version is attempted before the BigInteger version. If multiple specializations are valid
-for the given inputs, the first one will be performed.
+Furthermore, the addition operator can be overloaded to take strings. In SimpleLanguage,
+addition with strings performs concatenation. To avoid concatenating two integers,
+we use the type system and gaurds to check the types of the arguments. (Note that in
+SimpleLanguage, integers cannot be automatically cast to strings).
 </p>
 <p>
-Furthermore, there needs to be an implicit
-conversion from long to BigInteger declared in the language's type system.
-For SimpleLanguage, this is in <span class="inlineCode">com.oracle.truffle.sl.SLTypes.java</span>.
-</p>
-<p>
-To overload the add operator to work with Strings, simply write a specialization that takes
-Strings as arguments. SimpleLanugage's add performs string concatenation if one of the
-arguments is a String. To prevent integers from being concatenated as strings, write a type
-gaurd.
+To implement string concatenation with the + operator, simply write a specialization that takes
+Strings as arguments. The gaurd and isString function checks to see that at least one
+of the arguments is of type String.
 </p>
 <div class="codeBlock"><code>    ...
 
@@ -178,6 +188,10 @@ public void executeVoid(VirtualFrame frame) {
 <p>
 In SLReturnNode, throw a <span class="inlineCode">SLReturnException</span>, and catch this exception in the function
 AST node. Truffle removes the exception overhead.
+</p>
+<h2>Local Variables and Frame Types</h2>
+<p>
+//TODO 1:21:00
 </section>
 <br>
 <hr>

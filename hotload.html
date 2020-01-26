@@ -17,23 +17,27 @@
 <div id="container">
 <section id="body">
 <!-- body -->
-<div><svg width="3em" height="3em" style="float:left; vertical-align:middle;            padding-right: 1em">            <a href="index.html">            <rect x="0" y="0" width="3em" height="3em" rx="0.5em" ry="0.5em"/>            </a>            </svg><h1>Creating JVM Classes at Runtime</h1></div>
+<svg width="3em" height="3em" style="float:left; vertical-align:middle;            padding-right: 1em">            <a href="index.html">            <rect x="0" y="0" width="3em" height="3em" rx="0.5em" ry="0.5em"/>            </a>            </svg><h1 class="title">Creating JVM Classes at Runtime</h1>
 <p>
-This is how Lateral Lisp compiles at runtime.
+This is how Lateral Lisp compiles new Lisp to Java Bytecode at runtime.
 </p>
 <h2>Java Class Loaders</h2>
 <p>
-The java.lang.ClassLoader class can allow new classes to be loaded at runtime.
+The <span class="inlineCode">java.lang.ClassLoader</span> class can allow new classes to be loaded at runtime.
 This can be used to load code from a network, or in Lateral's case, to compile
-new user defined functions.
+new user defined functions. This allows Lateral to be both fast and highly flexible
+at the same time.
 </p>
 <p>
-A relative to self-modifying code, this allows the JVM program to extend its
-functionality while running.
+Class loading is like self-modifying code, but it has all of the safety features
+that Java comes with.
+With class loaders, a JVM program can extend its functionality while running.
 </p>
 <h2>Class Generation</h2>
 <p>
-The bytes of a valid JVM class must be loaded into a byte array.
+Compilation happens like usual. Lateral Lisp code is transformed into a Java
+class file. However, instead of writing the file to disk, the byte array can be
+immediately loaded into the running program.
 </p>
 <h2>Code</h2>
 <div class="codeBlock"><code>class MyClassLoader extends ClassLoader {
@@ -43,7 +47,9 @@ The bytes of a valid JVM class must be loaded into a byte array.
 }
 </code></div>
 <p>
-Reflection must be used to extract and call the methods of the generated class.
+The new class is then available to call from existing code. To get a handle on
+the new functions, reflection is used to get the new class' methods and store
+them in the environment.
 </p>
 <h2>Notes</h2>
 <p>
@@ -51,9 +57,9 @@ A loaded class cannot call protected or private methods of a class in the same
 package but loaded by another ClassLoader.
 </p>
 <p>
-Classes keep a reference to their ClassLoader. When there are no more references
-to the classes or the ClassLoader, they will be discarded by the garbage
-collector.
+Classes keep a reference to their <span class="inlineCode">ClassLoader</span>. When there are no more references
+to the classes or the ClassLoader, the ClassLoader and <b>the class itself</b> will be
+reclaimed by the garbage collector.
 </p>
 <h2>Sources</h2>
 <p>
@@ -62,6 +68,6 @@ collector.
 <br>
 <hr>
 <p><a href="index.html">Home</a></p>
-<p>Last updated on 2020-01-18</p></div>
+<p>Last updated on 2020-01-19</p></div>
 </body>
 </html>

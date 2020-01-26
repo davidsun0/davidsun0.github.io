@@ -1,13 +1,18 @@
-# About Simple Language
+# SimpleLanguage
 
-[SimpleLanguage Github](https://github.com/graalvm/simplelanguage)
+[Github](https://github.com/graalvm/simplelanguage)
 
-Simple Language is a high-level, C-style, dynamically and strongly typed programming language.
-
-It is made with Oracle's compiler framework, Truffle, as an introduction to language creation
-on the platform. As a teaching tool, its code is well documented.
+[Getting Started](https://www.graalvm.org/docs/graalvm-as-a-platform/implement-language/)
 
 [One VM To Rule Them All Slides (PDF)](https://lafo.ssw.uni-linz.ac.at/pub/papers/2016_PLDI_Truffle.pdf)
+
+SimpleLanguage is a high-level, C-style, dynamically and strongly typed programming language.
+
+SimpleLanguage is made by Oracle as a demonstration of their compiler framework, Truffle.
+Because it is an example codebase for language creation, the code is well documented.
+
+This page is a collection of my notes on how the language works and its implementation.
+
 
 ## Code Samples
 
@@ -84,4 +89,4 @@ function main() {
 
 ## Features
 
-Simple Language has support for arbitrary precision integers.
+SimpleLanguage has support for arbitrary precision integers.

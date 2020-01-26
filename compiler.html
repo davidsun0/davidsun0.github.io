@@ -10,43 +10,93 @@
 <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
 <link rel="icon" type="image/png" href="favicon-32x32.png" sizes="32x32">
 <link rel="icon" type="image/png" href="favicon-16x16.png" sizes="16x16">
-<title>Compiling Tail Recursive Functions</title>
+<title>Implementing Tail Call Optimization</title>
 </head>
 
 <body>
 <div id="container">
 <section id="body">
 <!-- body -->
-<div><svg width="3em" height="3em" style="float:left; vertical-align:middle;            padding-right: 1em">            <a href="index.html">            <rect x="0" y="0" width="3em" height="3em" rx="0.5em" ry="0.5em"/>            </a>            </svg><h1>Compiling Tail Recursive Functions</h1></div>
-<h2>Benefits of tail recursion</h2><p>
-Lateral Lisp has no for or while loops. For Lisps, it is often more natural
-to express looping with recursion.
+<svg width="3em" height="3em" style="float:left; vertical-align:middle;            padding-right: 1em">            <a href="index.html">            <rect x="0" y="0" width="3em" height="3em" rx="0.5em" ry="0.5em"/>            </a>            </svg><h1 class="title" id="Implementing Tail Call Optimization">Implementing Tail Call Optimization</h1>
+<h2 id="Benefits of tail recursion">Benefits of tail recursion</h2><p>
+Lateral Lisp has no for or while loops. For Lateral, it is often more natural
+to express looping with recursion. This is because Lateral Lisp does not
+have variables like in C or Java. Functions only pass values and these values
+can't be changed.
+(This isn't true for all Lisps, or even most Lisps, but it
+makes writing a Lateral compiler much simpler.)
 </p>
 <p>
-Implementing recursion in the style of a language like C can be inefficient
-because an additional call frame needs to be added to the stack for every
-recurisve call.
+However, recursion can be expensive. Every time a new recursive call is made,
+a new stack frame needs to be allocated. A recursive function that calls itself
+too many times can cause a stack overflow and crash. In fact, this happened
+quite often in the early stages of Lateral's development.
 </p>
 <p>
 Tail call optimization allows a recursive call in the tail position to be
 implemented as a GOTO to the beginning of the function. No new frame needs to
-be allocated.
+be allocated, and there are also perfomance benefits as well.
 </p>
 <p>
-In fact, from a bytecode or assembly point of view, tail optimized recursion is
-identical to a while loop. If the base case is reached, the loop breaks.
-Otherwise, the code is repeated with new arguments.
+In fact, you could consider tail call optimization a compiler optimization which
+converts tail recursive functions into while loops.
 </p>
-<h2>What is the tail position?</h2>
+<h2 id="What is the tail position?">What is the tail position?</h2>
 <p>
 Is a recursive call in the tail position? If the function returns the result of
 the call without any further processing, the function is in the tail position.
 </p>
+<div class="codeBlock"><code>int factorial(int n) {
+    if (n &lt;= 1) {
+        return 1;
+    } else {
+        return n * factorial(n - 1);
+    }
+}
+</code></div>
 <p>
-In Lateral, functions can only have one function call in the body. This call
-must be in the tail position.
+The classic implementation of the factorial function would not be tail recursive.
+After the recursive call is done, it still needs to be multiplied by n.
 </p>
-<h2>Generating bytecode</h2>
+<div class="codeBlock"><code>int factorial(int n, int total) {
+    if (n &lt;= 1) {
+        return total;
+    } else {
+        return factorial(n - 1, total * n);
+    }
+}
+
+int factorial(int n) {
+    return factorial(n, 1);
+}
+</code></div>
+<p>
+The above function is tail recursive, and is more or less a direct translation
+of the equivalent Lisp code. This may not seem like a big change, and in fact may
+seem less intuitive. However, when all you have is a hammer everything looks like
+a nail and Lateral's hammer is recursion.
+</p>
+<p>
+In this form, the compiler can transform the factorial code into something like this:
+</p>
+<div class="codeBlock"><code>int factorial(int n, int total) {
+    while (n &gt; 1) {
+        total = total * n;
+        n = n - 1;
+    }
+    return total;
+}
+</code></div>
+<p>
+Tada! The recursion has been optimized away!
+</p>
+<p>
+To be specific, this isn't exactly what happens. Notice how the behavior of factorial
+changes depending on whether <span class="inlineCode">n = n-1</span> or <span class="inlineCode">total = total * n</span> comes first. The generated
+bytecode assigns both values <i>simultaneously</i> to preserve the output of the original
+code.
+</p>
+<h2 id="Generating bytecode">Generating bytecode</h2>
 <p>
 Java has local variables as well as variables on the function's stack. Lateral
 operates almost exclusively on the stack.
@@ -72,7 +122,7 @@ calling convention is to have the last argument on the top of the stack.
 [A]
 </code></div><p>
 if function f is called right now with three arguments, it will be equivalent to
-<code class="inlineCode">f(A, B, C)</code>. We know the number of arguments the function has, so we can count
+<span class="inlineCode">f(A, B, C)</span>. We know the number of arguments the function has, so we can count
 down to zero.
 </p>
 <div class="codeBlock"><code>store_local 2
@@ -95,6 +145,6 @@ number of objects on the stack, the program won't run.
 <br>
 <hr>
 <p><a href="index.html">Home</a></p>
-<p>Last updated on 2020-01-18</p></div>
+<p>Last updated on 2020-01-20</p></div>
 </body>
 </html>

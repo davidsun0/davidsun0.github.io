@@ -1,2 +1,4 @@
 *.swp
+
 md/*.html
+!md/template.html
