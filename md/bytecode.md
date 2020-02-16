@@ -18,7 +18,8 @@ XX XX           constant pool length + 1
 constant pool
 
 00 21           extendable (not final) and public
-XX XX           pool index of class name (classref)
+XX XX           pool index of class (classref)
+XX XX           pool index of parent class (classref)
 00 00           implements zero interfaces
 00 00           zero class fields
 XX XX           number of methods
@@ -29,6 +30,21 @@ methods
 ```
 
 ## Constant Pool Table
+
+Constant pool entries are 1-indexed.
+
+### UTF8 Info
+```
+01    // UTF8 Info ID
+XX XX // length in bytes
+...   // utf8 bytes
+```
+
+### Class Info
+```
+07    // Class Info ID
+XX XX // index of UTF8 info containing class name
+```
 
 ## Method Format
 

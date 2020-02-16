@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<head>
+<meta charset="utf-8">
+
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#0050D0">
+
+<meta name="author" content="David Sun">
+<link rel="stylesheet" type="text/css" href="azure.css">
+<link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
+<link rel="icon" type="image/png" href="favicon-32x32.png" sizes="32x32">
+<link rel="icon" type="image/png" href="favicon-16x16.png" sizes="16x16">
+<title>SimplestLanguage: Getting Started with Truffle</title>
+</head>
+
+<body>
+<div id="container">
+<section id="body">
+<!-- body -->
+<svg width="3em" height="3em" style="float:left; vertical-align:middle;            padding-right: 1em">            <a href="index.html">            <rect x="0" y="0" width="3em" height="3em" rx="0.5em" ry="0.5em"/>            </a>            </svg><h1 class="title" id="SimplestLanguage: Getting Started with Truffle">SimplestLanguage: Getting Started with Truffle</h1>
+<p>
+SimplestLanguage is the bare minimum of code needed for a working
+language on the Graal + Truffle platform. <a href="simple.html">SimpleLanguage</a>
+may be simple compared to mainstream programming languages, but it's
+still quite complicated and requires a lot of reading to get familiar with.
+</p>
+<p>
+Goal: make a language that can parse and print a number.
+</p>
+<h2 id="Simplest POM">Simplest POM</h2>
+<p>
+Using Maven will make it easier to manage dependencies for the project.
+Of course, <span class="inlineCode">&lt;graalvm.version&gt;</span> should be changed as needed.
+</p>
+<p>
+IDEs like IntelliJ should automatically detect and download the appropriate files
+with this <span class="inlineCode">pom.xml</span> file. Be sure to change the groupId and artifactId
+with the Java package and project name of the language approprately.
+</p>
+<div class="codeBlock"><code>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+&lt;project xmlns=&quot;http://maven.apache.org/POM/4.0.0&quot;
+         xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot;
+         xsi:schemaLocation=&quot;http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd&quot;&gt;
+    &lt;modelVersion&gt;4.0.0&lt;/modelVersion&gt;
+    &lt;groupId&gt;PROJECT PACKAGE&lt;/groupId&gt;
+    &lt;artifactId&gt;YOUR LANGUAGE NAME&lt;/artifactId&gt;
+    &lt;version&gt;1.0-SNAPSHOT&lt;/version&gt;
+    &lt;properties&gt;
+        &lt;project.build.sourceEncoding&gt;UTF-8&lt;/project.build.sourceEncoding&gt;
+        &lt;graalvm.version&gt;19.3.0&lt;/graalvm.version&gt;
+    &lt;/properties&gt;
+    &lt;dependencies&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;org.graalvm.truffle&lt;/groupId&gt;
+            &lt;artifactId&gt;truffle-api&lt;/artifactId&gt;
+            &lt;version&gt;${graalvm.version}&lt;/version&gt;
+        &lt;/dependency&gt;
+    &lt;/dependencies&gt;
+&lt;/project&gt;
+</code></div>
+<h2 id="Main">Main</h2>
+<div class="codeBlock"><code>public static void main(String[] args)
+</code></div>
+<p>
+Friend of CS 101 students everywhere.
+</p>
+<p>
+Things to do:
+<ul><li>Build a <span class="inlineCode">org.graalvm.polyglot.Source</span> object from source code
+</li><li><a href="https://www.graalvm.org/truffle/javadoc/org/graalvm/polyglot/Source.html">Source</a>
+</li><li>Create a <span class="inlineCode">org.graalvm.polyglot.Context</span> object with <span class="inlineCode">SLLanguage</span>
+</li><li><a href="https://www.graalvm.org/truffle/javadoc/org/graalvm/polyglot/Context.html">Context</a>
+</li><li><span class="inlineCode">context.eval(source)</span>
+</li></ul></p>
+<h2 id="SLLanguage">SLLanguage</h2>
+<h3 id="Abstract Methods:">Abstract Methods:</h3><ul><li>createContext
+</li><li>isObjectOfLanguage
+</li></ul>
+<p>
+Define source code parsing (don't have to use Antlr)
+Parser returns AST of Nodes
+<div class="codeBlock"><code>@Override
+protected CallTarget parse(ParsingRequest pr) {
+    RootNode evalMain;
+    return Truffle.getRuntime().createCallTarget(evalMain);
+}
+</code></div>
+<h2 id="SLContext">SLContext</h2>
+<p>
+<a href="https://www.graalvm.org/truffle/javadoc/org/graalvm/polyglot/Context.html">Context</a>
+</section>
+<br>
+<hr>
+<p><a href="index.html">Home</a></p>
+<p>Last updated on 2020-01-26</p></div>
+</body>
+</html>

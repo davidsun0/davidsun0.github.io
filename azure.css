@@ -55,8 +55,9 @@ h3, h4, h5, h6{
 }
 
 p, li{
-    font-size: 1.1em;
-    line-height: 1.4;
+    /* font-size: 1.1em; */
+    font-size: 18px;
+    line-height: 1.2;
     max-width: 40em;  /* limits lines to ~90 characters */
 }
 

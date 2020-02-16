@@ -17,8 +17,8 @@
 <div id="container">
 <section id="body">
 <!-- body -->
-<div><svg width="3em" height="3em" style="float:left; vertical-align:middle;            padding-right: 1em">            <a href="index.html">            <rect x="0" y="0" width="3em" height="3em" rx="0.5em" ry="0.5em"/>            </a>            </svg><h1>Compiling for the Java Virtual Machine</h1></div>
-<h2>Overview</h2>
+<svg width="3em" height="3em" style="float:left; vertical-align:middle;            padding-right: 1em">            <a href="index.html">            <rect x="0" y="0" width="3em" height="3em" rx="0.5em" ry="0.5em"/>            </a>            </svg><h1 class="title" id="Compiling for the Java Virtual Machine">Compiling for the Java Virtual Machine</h1>
+<h2 id="Overview">Overview</h2>
 <p>
 The JVM is a bytecode virtual machine.
 </p>
@@ -28,7 +28,7 @@ Similar to assembly, but simpler.
 <p>
 Local variables and the stack
 </p>
-<h2>Class File Format</h2>
+<h2 id="Class File Format">Class File Format</h2>
 <div class="codeBlock"><code>CA FE BA BE     java magic number
 00 00 00 37     java version 55.0 (java 11)
 XX XX           constant pool length + 1
@@ -36,7 +36,8 @@ XX XX           constant pool length + 1
 constant pool
 
 00 21           extendable (not final) and public
-XX XX           pool index of class name (classref)
+XX XX           pool index of class (classref)
+XX XX           pool index of parent class (classref)
 00 00           implements zero interfaces
 00 00           zero class fields
 XX XX           number of methods
@@ -45,8 +46,18 @@ methods
 
 00 00           zero attributes
 </code></div>
-<h2>Constant Pool Table</h2>
-<h2>Method Format</h2>
+<h2 id="Constant Pool Table">Constant Pool Table</h2>
+<p>
+Constant pool entries are 1-indexed.
+</p>
+<h3 id="UTF8 Info">UTF8 Info</h3><div class="codeBlock"><code>01    // UTF8 Info ID
+XX XX // length in bytes
+...   // utf8 bytes
+</code></div>
+<h3 id="Class Info">Class Info</h3><div class="codeBlock"><code>07    // Class Info ID
+XX XX // index of UTF8 info containing class name
+</code></div>
+<h2 id="Method Format">Method Format</h2>
 <div class="codeBlock"><code>00 09           public static
 XX XX           pool index of function name
 XX XX           pool index of function signature
@@ -62,20 +73,20 @@ source bytecode (length in bytes is code size)
 
 stack map table 
 </code></div>
-<h2>Stack Map Table and Frames</h2>
+<h2 id="Stack Map Table and Frames">Stack Map Table and Frames</h2>
 
-<h1>Additional notes</h1>
-<h2>Method Names</h2>
+<h2 id="Additional notes">Additional notes</h2>
+<h2 id="Method Names">Method Names</h2>
 <p>
-<code class="inlineCode">&lt;clinit&gt;</code> is reserved for the static initializer. It must be <code class="inlineCode">static void</code> and
+<span class="inlineCode">&lt;clinit&gt;</span> is reserved for the static initializer. It must be <span class="inlineCode">static void</span> and
 take no arguments.
 </p>
 <p>
-A method may not have any of <code class="inlineCode">&lt;</code>, <code class="inlineCode">&gt;</code>, or <code class="inlineCode">;</code> in its name.
+A method may not have any of <span class="inlineCode">&lt;</span>, <span class="inlineCode">&gt;</span>, or <span class="inlineCode">;</span> in its name.
 </section>
 <br>
 <hr>
 <p><a href="index.html">Home</a></p>
-<p>Last updated on 2020-01-18</p></div>
+<p>Last updated on 2020-02-02</p></div>
 </body>
 </html>
