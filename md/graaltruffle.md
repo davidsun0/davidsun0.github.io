@@ -70,6 +70,7 @@ Use Truffle's annotations to automatically generate this code: Annotate the clas
 information about its children.
 
 For example, `SLAddNode` performs addition on a left and right child.
+
 ```
 @NodeChildren({@NodeChild("leftNode"), @NodeChild("rightNode")})
 public class SLAddNode extends SLExpressionNode {

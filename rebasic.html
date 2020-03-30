@@ -1,55 +1,85 @@
-# ReBasic: My First "Assembler"
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
 
-I was just looking through my old code and found [ReBasic](https://github.com/whetfire/ReBasic).
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#0050D0">
 
+<meta name="author" content="David Sun">
+<link rel="stylesheet" type="text/css" href="azure.css">
+<link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
+<link rel="icon" type="image/png" href="favicon-32x32.png" sizes="32x32">
+<link rel="icon" type="image/png" href="favicon-16x16.png" sizes="16x16">
+<title>ReBasic: My First "Assembler"</title>
+</head>
+
+<body>
+<div id="container">
+<section id="body">
+<!-- body -->
+<svg width="3em" height="3em" style="float:left; vertical-align:middle;padding-right: 1em">
+<a href="index.html"><rect x="0" y="0" width="3em" height="3em" rx="0.5em" ry="0.5em"/></a>
+</svg>
+<h1 class="title" id="ReBasic: My First "Assembler"">ReBasic: My First "Assembler"</h1>
+<p>
+I was just looking through my old code and found <a href="https://github.com/whetfire/ReBasic">ReBasic</a>.
+</p>
+<p>
 It's an IDE + Assembler for the TI-83 and 84 series graphing calculators.
 On the graphing calculators, you can write your own programs in a language
 unofficially called TI Basic (because it looks a lot like BASIC). The project
 is written with Processing. The language is ultimately Java, but Processing
 provides libraries and performs preprocessing to make it beginner-friendly.
-
-## Background
-
+</p>
+<h2 id="Background">Background</h2>
+<p>
 Back in
 high school when I wrote this, I spent absurd amounts of time making little games
 and other cool toys on it.
-
+</p>
+<p>
 My fondest memory is finding out that the calculator's
-[normal CDF function](https://en.wikipedia.org/wiki/Normal_distribution#Cumulative_distribution_function)
+<a href="https://en.wikipedia.org/wiki/Normal<i>distribution#Cumulative</i>distribution_function">normal CDF function</a>
 was innacurate and then writing a program which wasn't.
-
+</p>
+<p>
 I was taking AP Statistics, where we learned that there is no closed form for
 the normal CDF function. But I was also learning about Taylor Series in Calculus,
 so I wrote a program to integrate the normal distribution.
 I thought I had all of my math right, but when I compared my program's output to
 the built in function, the last two digits were always different.
-
+</p>
+<p>
 Well, it turns out that my program was correct, and the calculator was wrong!
 I found tables online and found that my program was giving more accurate answers
 than the built in function!
 The only problem is that the built in function was instantaneous while my program
 took a few seconds to run...
-
+</p>
+<p>
 Anyways, ReBasic was a way for me to write programs on my computer and then transfer
 them over the USB connector. The calculator didn't have a proper keyboard. You
 need to navigate through the menu system to find the command you're looking for.
 Programs took a long time to write and then we had to delete them for tests.
 It wasn't convenient at all.
-
-## Code quality
-
+</p>
+<h2 id="Code quality">Code quality</h2>
+<p>
 In total, there are about 2000 lines of code, including whitespace and comments.
 The code quality is actually higher than I expected. Nothing is awful in the moment
 to moment code, but the overall architecture is... interesting. Still, 2000 lines is
 pretty ambitious for a self taught high school student and it's impressive that it
 more or less works. I wonder if I gave up because it simply became too hard to add
 new features and make changes.
-
+</p>
+<p>
 Looking through the code, it seems like the TI Basic programs all had a very simple format.
 There is a header that's about 10 bytes long, and every token (command, variable,
 symbol, etc) maps to one or two bytes in the program file. Even still, I'm very
 impressed that it's written by a high school student.
-
+</p>
+<p>
 Unfortunately it doesn't run
 right out of the box. First of all, Processing expects the folder to match the name
 of the main file. Since the entry point of the program is in rebasic.pde, the project
@@ -63,9 +93,9 @@ point in time though. I just don't see myself adding all of the other bells and 
 if the core feature of ReBasic didn't work. Most likely I got busy during a refactoring
 and never picked it up again. I haven't touched a graphing calculator in years,
 so I've never had the need for ReBasic.
-
-## A mathematical IME
-
+</p>
+<h2 id="A mathematical IME">A mathematical IME</h2>
+<p>
 They way that TI Basic commands work makes writing an editor a non-trivial problem.
 Even now, I'm not sure that have better ways of making an IDE for a computer.
 On the calculator, typing out the letters
@@ -73,41 +103,51 @@ On the calculator, typing out the letters
 Every command has its own special encoding which has nothing to do with the name
 or letters in the command.
 The solution I came up with was inspired by
-[Chinese IMEs](https://en.wikipedia.org/wiki/Chinese_input_methods_for_computers): you type
+<a href="https://en.wikipedia.org/wiki/Chinese<i>input</i>methods<i>for</i>computers">Chinese IMEs</a>: you type
 a series of letters and then press space. If the sequence of letters is a command,
 ReBasic will automatically convert them into a single token. Press enter and the text you're
 typing will be entered as literal characters. The working group of characters is underlined
 for your programming convinence. Furthermore, tokens are colored so you can be sure
 what your program represents.
-
+</p>
+<p>
 One other benefit of the IME system is that with it, you can type all of the symbols
 using only a QWERTY keyboard.
 For example, typing 'arctan(' and pressing space creates the
 'tan<sup>-1</sup>(' token.
 Every single token in TI Basic has corresponding alpha-numeric sequence(s).
-[There's a table.](https://github.com/whetfire/ReBasic/blob/master/data/tokens3.txt)
+<a href="https://github.com/whetfire/ReBasic/blob/master/data/tokens3.txt">There's a table.</a>
 This turned out to be especially convinient for common symbols which
 don't appear on the keyboard like the assignment operator, which is a right arrow.
-
-## Writing a GUI system from scratch
-
+</p>
+<h2 id="Writing a GUI system from scratch">Writing a GUI system from scratch</h2>
+<p>
 There's a lot of detail in the program. Processing only provides a 2D canvas, but
 there's code to render all of the tokens onto the screen. Processing doesn't have any
 GUI elements, so everything on the screen is made from graphical primitives and
 my very own event handling system. Special care is taken
 to render mathematical symbols with Unicode, or custom bitmaps for special characters
 unique to the TI calculator.
-
+</p>
+<p>
 I'm surprised that I even took the time to draw images for glyphs that aren't in Unicode.
-In `data/glyphs/`, there are a few interesting symbols that must be unique to the TI-83.
+In <code class="inlineCode">data/glyphs/</code>, there are a few interesting symbols that must be unique to the TI-83.
 You can type these glyphs with 'invertedequal', 'biguparrow', 'bigdownarrow',
 'squaremark', '+mark', '.mark', and 'angle'.
-
+</p>
+<p>
 There's even a dark theme! There isn't a way to change it with the GUI, but changing
-[line 11 of rebasic.pde](https://github.com/whetfire/ReBasic/blob/master/rebasic.pde#L11)
-to `colorscheme = night` turns the program from light to dark!
+<a href="https://github.com/whetfire/ReBasic/blob/master/rebasic.pde#L11">line 11 of rebasic.pde</a>
+to <code class="inlineCode">colorscheme = night</code> turns the program from light to dark!
 I like Me From the Past's willingness to write a text editor more or less from scratch.
 All of the keystrokes are captured and there's logic for moving the cursor around
 the screen. The text area even lets you scroll (manually with the arrow keys) beyond
 the edge of the screen if your program becomes long!
-
+</p>
+</section>
+<br>
+<hr>
+<p><a href="index.html">Home</a></p>
+<p>Last updated on 2020-03-30</p></div>
+</body>
+</html>

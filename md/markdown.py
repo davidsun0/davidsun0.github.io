@@ -16,12 +16,11 @@ codeMatcher = re.compile('`([^`]+)`')
 boldMatcher = re.compile('__(.+?)__')
 italicMatcher = re.compile('_(.+?)_')
 
-bigSquare = '<svg width="3em" height="3em" style="float:left; vertical-align:middle;\
-            padding-right: 1em">\
-            <a href="index.html">\
-            <rect x="0" y="0" width="3em" height="3em" rx="0.5em" ry="0.5em"/>\
-            </a>\
-            </svg>'
+bigSquare = """\
+<svg width="3em" height="3em" style="float:left; vertical-align:middle;padding-right: 1em">
+<a href="index.html"><rect x="0" y="0" width="3em" height="3em" rx="0.5em" ry="0.5em"/></a>
+</svg>
+"""
 
 title = None
 codeMode = False
@@ -30,7 +29,7 @@ listMode = False
 
 def codeEscape(match):
     """Returns the HTML from a regex match of inline code"""
-    return f'<span class="inlineCode">{html.escape(match.group(1))}</span>'
+    return f'<code>{html.escape(match.group(1))}</code>'
 
 def processInline(line):
     """Creates HTML for a single line of markdown"""
@@ -58,6 +57,10 @@ def processLine(line):
     global codeMode
     global listMode
 
+    # HORIZONTAL RULE
+    if line == '---\n':
+        return '<hr>'
+
     # HEADINGS
     headm = headingMatcher.match(line)
     if headm:
@@ -76,7 +79,7 @@ def processLine(line):
     # CODE BLOCK
     if line[:3] == '```':
         paragraphMode = False
-        res = '</code></div>' if codeMode else '<div class="codeBlock"><code>' 
+        res = '</code>' if codeMode else '<code class="codeBlock">' 
         codeMode = not codeMode
         return res
 

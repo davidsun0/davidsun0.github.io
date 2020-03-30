@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+<html>
 <head>
 <meta charset="utf-8">
 
@@ -17,7 +18,10 @@
 <div id="container">
 <section id="body">
 <!-- body -->
-<svg width="3em" height="3em" style="float:left; vertical-align:middle;            padding-right: 1em">            <a href="index.html">            <rect x="0" y="0" width="3em" height="3em" rx="0.5em" ry="0.5em"/>            </a>            </svg><h1 class="title" id="Implementing Tail Call Optimization">Implementing Tail Call Optimization</h1>
+<svg width="3em" height="3em" style="float:left; vertical-align:middle;padding-right: 1em">
+<a href="index.html"><rect x="0" y="0" width="3em" height="3em" rx="0.5em" ry="0.5em"/></a>
+</svg>
+<h1 class="title" id="Implementing Tail Call Optimization">Implementing Tail Call Optimization</h1>
 <h2 id="Benefits of tail recursion">Benefits of tail recursion</h2><p>
 Lateral Lisp has no for or while loops. For Lateral, it is often more natural
 to express looping with recursion. This is because Lateral Lisp does not
@@ -46,19 +50,19 @@ converts tail recursive functions into while loops.
 Is a recursive call in the tail position? If the function returns the result of
 the call without any further processing, the function is in the tail position.
 </p>
-<div class="codeBlock"><code>int factorial(int n) {
+<code class="codeBlock">int factorial(int n) {
     if (n &lt;= 1) {
         return 1;
     } else {
         return n * factorial(n - 1);
     }
 }
-</code></div>
+</code>
 <p>
 The classic implementation of the factorial function would not be tail recursive.
 After the recursive call is done, it still needs to be multiplied by n.
 </p>
-<div class="codeBlock"><code>int factorial(int n, int total) {
+<code class="codeBlock">int factorial(int n, int total) {
     if (n &lt;= 1) {
         return total;
     } else {
@@ -69,7 +73,7 @@ After the recursive call is done, it still needs to be multiplied by n.
 int factorial(int n) {
     return factorial(n, 1);
 }
-</code></div>
+</code>
 <p>
 The above function is tail recursive, and is more or less a direct translation
 of the equivalent Lisp code. This may not seem like a big change, and in fact may
@@ -79,20 +83,20 @@ a nail and Lateral's hammer is recursion.
 <p>
 In this form, the compiler can transform the factorial code into something like this:
 </p>
-<div class="codeBlock"><code>int factorial(int n, int total) {
+<code class="codeBlock">int factorial(int n, int total) {
     while (n &gt; 1) {
         total = total * n;
         n = n - 1;
     }
     return total;
 }
-</code></div>
+</code>
 <p>
 Tada! The recursion has been optimized away!
 </p>
 <p>
 To be specific, this isn't exactly what happens. Notice how the behavior of factorial
-changes depending on whether <span class="inlineCode">n = n-1</span> or <span class="inlineCode">total = total * n</span> comes first. The generated
+changes depending on whether <code class="inlineCode">n = n-1</code> or <code class="inlineCode">total = total * n</code> comes first. The generated
 bytecode assigns both values <i>simultaneously</i> to preserve the output of the original
 code.
 </p>
@@ -117,19 +121,19 @@ first called!)
 Storing the variables on the stack should be done in reverse order. The JVM's
 calling convention is to have the last argument on the top of the stack.
 </p>
-<div class="codeBlock"><code>[C] &lt;-top
+<code class="codeBlock">[C] &lt;-top
 [B]
 [A]
-</code></div><p>
+</code><p>
 if function f is called right now with three arguments, it will be equivalent to
-<span class="inlineCode">f(A, B, C)</span>. We know the number of arguments the function has, so we can count
+<code class="inlineCode">f(A, B, C)</code>. We know the number of arguments the function has, so we can count
 down to zero.
 </p>
-<div class="codeBlock"><code>store_local 2
+<code class="codeBlock">store_local 2
 store_local 1
 store_local 0
 goto start
-</code></div>
+</code>
 <p>
 Start must be bytecode offset 0, and JVM's goto uses relative offsets, so the
 offset is simply the negation of the current byte offset. If the goto happens
