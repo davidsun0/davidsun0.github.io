@@ -12,7 +12,7 @@
 
 body{
     margin: 0;
-    font-family: 'Roboto', sans-serif;
+    font-family: sans-serif;
     height: 100%;
     background: #FCFCFC;
     font-size: 16px;
@@ -38,38 +38,34 @@ a{
 }
 
 .title{
-    font-size: 2.5em;
+    font-size: 2.2em;
     color: #0050D0;
 }
 
 rect{
     fill: #0050D0;
-    width: 3em;
-    height: 3em;
 }
 
 h1{
-    font-size: 2.2em;
+    font-size: 2em;
     color: #202020;
 }
 
 h2{
-    font-size: 2em;
-    color: #404040;
+    font-size: 1.8em;
 }
 
 h3{
     font-size: 1.6em;
-    color: #606060;
 }
 
-h3, h4, h5, h6{
+h1, h2, h3, h4, h5, h6{
     font-weight: normal;
     color: #202020;
 }
 
 p, li{
-    font-size: 18px;
+    font-size: 16px;
     line-height: 1.2;
     max-width: 40em;  /* limits lines to ~90 characters */
 }
