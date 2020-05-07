@@ -14,13 +14,10 @@
 </head>
 
 <body>
-<div id="container">
-<section id="body">
-<!-- body -->
 <svg width="3em" height="3em" style="float:left; vertical-align:middle;padding-right: 1em">
 <a href="index.html"><rect x="0" y="0" width="3em" height="3em" rx="0.5em" ry="0.5em"/></a>
 </svg>
-<h1 class="title" id="InvokeDynamic: The best JVM instruction">InvokeDynamic: The best JVM instruction</h1>
+<h1 class="title">InvokeDynamic: The best JVM instruction</h1>
 <p>
 The Java Virtual Machine (JVM) is becomming a popular target for new languages.
 While writing my own, I learned about the invokedynamic instruction, which is
@@ -32,18 +29,16 @@ typically geared towards JVM developers and people who know what they're doing.
 This guide is for casual users of invokedynamic - e.g. amateur compiler writers
 looking to target the JVM for their dynamic language.
 </p>
-<h2 id="Contents">Contents</h2>
-<ul><li><a href="#what<i>is</i>indy">What is invokedynamic?</a>
-</li><li><a href="#why<i>use</i>indy">Why use invokedynamic?</a>
-</li><li><a href="#indy<i>cant</i>do">What invokedynamic can't do</a>
-</li><li><a href="#examples">Uses of invokedynamic</a>
-</li><li><a href="#howto">How to use it</a>
-</li><li><a href="#dynamic_constants">Dynamic constants</a>
-</li><li><a href="#sources">Sources</a>
-</li></ul>
-<p>
-<h1 id="what<i>is</i>indy">What is invokedynamic?</h1>
-</p>
+<h2>Contents</h2>
+<ul><li><a href="#what-is-indy">What is invokedynamic?</a></li>
+<li><a href="#why-use-indy">Why use invokedynamic?</a></li>
+<li><a href="#indy-cant-do">What invokedynamic can't do</a></li>
+<li><a href="#examples">Uses of invokedynamic</a></li>
+<li><a href="#basics">Basic Uses</a></li>
+<li><a href="#dynamic-constants">Dynamic constants</a></li>
+<li><a href="#sources">Sources</a></li></ul>
+<h1 id="what-is-indy">What is invokedynamic?</h1>
+
 <p>
 First of all, what is a dynamic language? Dynamic languages like Ruby or Python
 don't do type checking at compile time. Every method in Java must explicitly
@@ -54,11 +49,11 @@ errors instead of compiler errors.
 <p>
 The Java bytecode contains four other invoke instructions, all for calling
 methods:
-<ul><li>invokestatic for static methods
-</li><li>invokeinterface for interface methods
-</li><li>invokespecial for class and object initializers
-</li><li>invokevirtual for <a href="https://en.wikipedia.org/wiki/Virtual_function">virtual methods</a>
-</li></ul></p>
+</p>
+<ul><li>invokestatic for static methods</li>
+<li>invokeinterface for interface methods</li>
+<li>invokespecial for class and object initializers</li>
+<li>invokevirtual for <a href="https://en.wikipedia.org/wiki/Virtual_function">virtual methods</a></li></ul>
 <p>
 Note: virtual methods are all all the method calls on an object like
 <code>myObject.doSomething();</code>.
@@ -66,7 +61,7 @@ With these four instructions, you can call any method on the JVM.
 </p>
 <p>
 Unlike the other members of the invoke family, invokedynamic isn't made for
-calling a certain type of method, it's for calling methods <i>at a certain time</i>.
+calling a certain type of method, it's for calling methods <em>at a certain time</em>.
 An invokedynamic instruction only contains a vague idea of the method it wants to
 call. At runtime, an actual method will be looked up with a bootstrap method in
 a process similar to Java's reflection API.
@@ -75,12 +70,11 @@ a process similar to Java's reflection API.
 This makes invokedynamic a powerful tool. It exposes parts of the JVM's internal
 features like just in time compilation to the programmer.
 </p>
-<p>
-<h1 id="why<i>use</i>indy">Why use invokedynamic?</h1>
-</p>
+<h1 id="why-use-indy">Why use invokedynamic?</h1>
+
 <p>
 Java is sold on its safety. Since Java is a static language, the compiler makes
-sure that code is <i>type safe</i> - 
+sure that code is <em>type safe</em> - 
 objects have to be explicity cast from one type to another.
 To provide this type safety, Java has strict requirements when calling a function.
 The types of all the arguments and the type of the return value must be known.
@@ -100,9 +94,8 @@ One of the most surprising ways invokedynamic can be used is with MethodHandles.
 MethodHandles can piece together existing methods and control statements in a way
 that verges on writing new code at runtime (there are some limitations).
 </p>
-<p>
-<h1 id="indy<i>cant</i>do">What invokedynamic can't do</h1>
-</p>
+<h1 id="indy-cant-do">What invokedynamic can't do</h1>
+
 <p>
 While invokedynamic is powerful, it still is a "low level" feature.
 One of the most attractive features of dynamic languages is multiple dispatch,
@@ -114,7 +107,7 @@ of Javascript.
 With multiple dispatch, which method is called is based on the types of the
 objects at runtime.
 </p>
-<h2 id="Example:">Example:</h2>
+<h2>Example:</h2>
 <code class="codeBlock">public class TestGadget {
     static void identify(Integer i) {
         System.out.println(i + &quot; is an Integer!&quot;);
@@ -153,10 +146,9 @@ Similarly, invokedynamic does not provide dynamic dispatch on the arguments.
 The JVM has dynamic disptach based on the object identity: <code>object.toString()</code>
 calls the appropriate method based on <code>object</code>'s true type.
 </p>
-<p>
 <h1 id="examples">Uses of Invokedynamic</h1>
-</p>
-<h2 id="Calling a method that doesn't exist yet">Calling a method that doesn't exist yet</h2>
+
+<h2>Calling a method that doesn't exist yet</h2>
 <p>
 Invokedyanmic can be helpful when your code needs to interface with code that
 doesn't exist yet. The JVM allows for classes to be generated
@@ -168,30 +160,29 @@ and that method call is essentially "installed" into the code. This eliminates
 the overhead of reflection and allows the JVM to perform optimizations as if
 the method had been directly called.
 </p>
-<h2 id="Changing what method is being called">Changing what method is being called</h2>
+<h2>Changing what method is being called</h2>
 <p>
 The invoke library provides ways to change the invokedyanmic CallSite during
 the course of the program. MutableCallSite and VolatileCallSite can change
 the behavior of the invokedynamic site after binding. This allows code
 to be redefined and modified long after compilation.
 </p>
-<h2 id="Modifying how a method is called">Modifying how a method is called</h2>
+<h2>Modifying how a method is called</h2>
 <p>
 Functionality provided by MethodHandles:
 </p>
-<ul><li>Inserting constant objects and binding objects to virtual calls
-</li><li>Reordering and preprocessing arguments
-</li><li>Packing and unpacking arguments from arrays
-</li><li><code>if</code> expressions, <code>for</code>, <code>while</code> loops, exception throwing and handling and more!
-</li></ul>
-<h2 id="Calling a method without knowing its types">Calling a method without knowing its types</h2>
+<ul><li>Inserting constant objects and binding objects to virtual calls</li>
+<li>Reordering and preprocessing arguments</li>
+<li>Packing and unpacking arguments from arrays</li>
+<li><code>if</code> expressions, <code>for</code>, <code>while</code> loops, exception throwing and handling and more!</li></ul>
+<h2>Calling a method without knowing its types</h2>
 <p>
 This is the use I saw the most. If you don't know an object's type at compile
 time, you can't know which method to call. However, if you know that the type
 won't change during run time, you can use <code>instanceof</code> and invokedynamic to
 select the right method during run time.
 </p>
-<h1 id="How to use invokedynamic">How to use invokedynamic</h1>
+<h1>How to use invokedynamic</h1>
 <p>
 As of 2020, Java cannot directly call invokedynamic. The command is only used
 when compiling lambdas and string concatenation.
@@ -199,7 +190,7 @@ when compiling lambdas and string concatenation.
 <p>
 The "I need to get stuff done" option is to use the ASM library. It is a Java
 library for generating and analyzing JVM bytecode. The ASM library handles most
-of the tedious parts of making an inovkedynamic call. This is what Java uses ASM
+of the tedious parts of making an inovkedynamic call. This is what Java uses
 internally to implement lambdas.
 </p>
 <p>
@@ -207,12 +198,11 @@ The "I actually enjoy staring at hex" option is to generate bytecode directly.
 The <a href="https://docs.oracle.com/javase/specs/jvms/se7/html/jvms-4.html#jvms-4.4.10">JVM specification</a>
 describes all the necessary pieces needed to get it working.
 </p>
+<h1 id="basics">Invokedyanmic basics</h1>
+
 <p>
-<h1 id="howto">Invokedyanmic basics</h1>
-</p>
-<p>
-The actual invokedynamic instruction is located at the method <i>call site</i>.
-The method used to find the method to be called is known as the <i>bootstrap method</i>.
+The actual invokedynamic instruction is located at the method <em>call site</em>.
+The method used to find the method to be called is known as the <em>bootstrap method</em>.
 </p>
 <p>
 When the code execution first reaches the call site, the bootstrap method is called.
@@ -281,9 +271,8 @@ method. These additional arguments must be Java primitives or Strings.
 Bootstrap doesn't have to be <code>public static</code>, an object can call its own non-static
 or private bootstrap method.
 </p>
-<p>
-<h1 id="dynamic_constants">Dynamic constants</h1>
-</p>
+<h1 id="dynamic-constants">Dynamic constants</h1>
+
 <p>
 Dynamic constants are a closely related feature to invokedynamic.
 At runtime, an object can be generated which is then treated like a constant in
@@ -316,35 +305,31 @@ in the form of primitive values and Strings.
 Information about the bootstrap method is attatched to the ldc instruction,
 just like invokedynamic.
 </p>
-<h1 id="Things I don't know">Things I don't know</h1>
+<h1>Things I don't know</h1>
 <p>
 As a disclaimer, I am not an Oracle engineer and I have not read the Hotspot JVM
 source code. This article was written in hopes that it will be a useful explanation
 of invokedynamic (but also as a guide for myself).
 </p>
 <p>
-This is what is known in the community as the "further research" section.
+This is what is known in the literature as the "further research" section.
 </p>
-<h2 id="Questions:">Questions:</h2>
-<ul><li>Can different objects have different bound methods? (probably not, it seems)
-</li><li>Are CallSites garbage collected if the Class with the invokedynamic
-instruction is collected?
-</li><li>What is the performance of invokedynamic?
-</li></ul>
-<p>
+<h2>Questions:</h2>
+<ul><li>Can different objects have different bound methods? (probably not, it seems)</li>
+<li>Are CallSites garbage collected if the Class with the invokedynamicinstruction is collected?
+</li>
+<li>What is the performance of invokedynamic?</li></ul>
 <h1 id="sources">Sources / Further Reading</h1>
-</p>
-<ul><li><a href="https://en.wikipedia.org/wiki/Dynamic<i>programming</i>language">Dynamic Programming Language (Wikipedia)</a>
-</li><li><a href="https://www.infoq.com/articles/Invokedynamic-Javas-secret-weapon/">Invokedynamic - Java's Secret Weapon</a>
-</li><li><a href="https://www.javaworld.com/article/2860079/invokedynamic-101.html">Invokedynamic 101</a>
-</li><li><a href="http://blog.headius.com/2007/01/invokedynamic-actually-useful.html">InvokeDynamic: Actually Useful?</a>
-</li><li><a href="http://blog.headius.com/2008/09/first-taste-of-invokedynamic.html">A First Taste of InvokeDynamic</a>
-</li><li><a href="http://blog.headius.com/2011/08/invokedynamic-in-jruby-constant-lookup.html">Invokedynamic in JRuby: Constant Lookup</a>
-</li><li><a href="https://github.com/Sable/soot/wiki/Java%27s-Invokedynamic">Java's Invokedynamic</a>
-</section>
-<br>
-<hr>
+
+<ul><li><a href="https://en.wikipedia.org/wiki/Dynamic_programming_language">Dynamic Programming Language (Wikipedia)</a></li>
+<li><a href="https://www.infoq.com/articles/Invokedynamic-Javas-secret-weapon/">Invokedynamic - Java's Secret Weapon</a></li>
+<li><a href="https://www.javaworld.com/article/2860079/invokedynamic-101.html">Invokedynamic 101</a></li>
+<li><a href="http://blog.headius.com/2007/01/invokedynamic-actually-useful.html">InvokeDynamic: Actually Useful?</a></li>
+<li><a href="http://blog.headius.com/2008/09/first-taste-of-invokedynamic.html">A First Taste of InvokeDynamic</a></li>
+<li><a href="http://blog.headius.com/2011/08/invokedynamic-in-jruby-constant-lookup.html">Invokedynamic in JRuby: Constant Lookup</a></li>
+<li><a href="https://github.com/Sable/soot/wiki/Java%27s-Invokedynamic">Java's Invokedynamic</a></li></ul>
+<br><hr>
 <p><a href="index.html">Home</a></p>
-<p>Last updated on 2020-05-02</p></div>
+<p>Last updated on 2020-05-06</p>
 </body>
 </html>

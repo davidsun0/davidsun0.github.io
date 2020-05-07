@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html lang="en-US">
 <head>
 <meta charset="utf-8">
 
@@ -14,17 +14,13 @@
 </head>
 
 <body>
-<div id="container">
-<section id="body">
-<!-- body -->
 <svg width="3em" height="3em" style="float:left; vertical-align:middle;padding-right: 1em">
 <a href="index.html"><rect x="0" y="0" width="3em" height="3em" rx="0.5em" ry="0.5em"/></a>
 </svg>
-<h1 class="title" id="Lateral Lisp: A Journal">Lateral Lisp: A Journal</h1>
+<h1 class="title">Lateral Lisp: A Journal</h1>
 <p>
 Just some thoughts and ideas on writing my own Lisp dialect.
 </p>
-<p>
 <ul>
 <li><a href="#glorified">2020-03-14 A Glorified Assembler</a></li>
 <li><a href="#reflection">2020-02-16 Reflection on Lateral Version -1</a></li>
@@ -32,9 +28,9 @@ Just some thoughts and ideas on writing my own Lisp dialect.
 <li><a href="#lambda_pass">2019-11-23 A new pass for Lambdas</a></li>
 <li><a href="#updates">2019-08 Status Updates</a></li>
 </ul>
-</p>
-<p>
+
 <h1 id="glorified">A Glorified Assembler</h1>
+<p>
 2020-03-14
 </p>
 <p>
@@ -45,7 +41,7 @@ So... I think I made my language too powerful. At this point I'm not sure if I
 can even call it a programming language anymore. It just feels like a glorified
 JVM Bytecode assembler.
 </p>
-<h2 id="Special Forms">Special Forms</h2>
+<h2>Special Forms</h2>
 <p>
 In all programming languages, there are reserved keywords which serve as the
 foundation on which all programs stand. You know, stuff like <code>class</code>, <code>def</code>,
@@ -64,12 +60,11 @@ inline assembly. That's it.
 See? It's just a glorified assembler now. Although being able to run code at
 compile time is pretty unique...
 </p>
-<p>
 <br>
 <hr><br>
-</p>
-<p>
+
 <h1 id="reflection">Reflection on Lateral Version -1</h1>
+<p>
 2020-02-16
 </p>
 <p>
@@ -80,7 +75,7 @@ I worked on this code from 2019-02-01 to 2020-02-01 and it just feels like I've
 written myself into a corner. I'm starting fresh with all the experience I've
 gained.
 </p>
-<h2 id="So why rewrite?">So why rewrite?</h2>
+<h2>So why rewrite?</h2>
 <p>
 What made Lateral -1 a pain to work with in the end was probably the result of
 a misguided goal. My aim was to have a self-hosting language as soon as
@@ -89,10 +84,10 @@ removed Java code and replaced it with Lateral as much as possible.
 </p>
 <p>
 The problems:
-<ul><li>The Lateral compiler is slow
-</li><li>No good tools to debug Lateral
-</li><li>Therefore it's hard to develop in Lateral
-</li></ul></p>
+</p>
+<ul><li>The Lateral compiler is slow</li>
+<li>No good tools to debug Lateral</li>
+<li>Therefore it's hard to develop in Lateral</li></ul>
 <p>
 You can see how I wrote myself into a corner. The language was still immature,
 so I was shooting myself in the foot by removing the Java parts.
@@ -114,7 +109,7 @@ it right.
 This got to the point where it was painful to write new code, and well, here we
 are.
 </p>
-<h2 id="What am I going to do differently?">What am I going to do differently?</h2>
+<h2>What am I going to do differently?</h2>
 <p>
 So what did I learn from my mistakes? First of all, don't jump the gun on self
 hosting. While it sounds really cool to have a compiler compile itself, the
@@ -133,12 +128,11 @@ An unrelated side note: This isn't related to any failures, but now I want to
 play with Java's invokedynamic. I think it could help with hot swapping method
 definitions and the like.
 </p>
-<p>
 <br>
 <hr><br>
-</p>
-<p>
+
 <h1 id="closure">The Lambda-Closure Problem</h1>
+<p>
 2019-12-01
 </p>
 <p>
@@ -151,8 +145,8 @@ If a lambda is closing over an internal variable, the lambda must be made at
 runtime. The compiler should emit code to construct the lambda, not the lambda
 itself.
 </p>
-<p>
 <h1 id="lambda_pass">A new pass for lambdas</h1>
+<p>
 2019-11-23
 </p>
 <p>
@@ -213,14 +207,12 @@ in the outer scope.
 Basically what I'm trying to say here is that the JVM makes it a pain to
 implement first class functions.
 </p>
-<p>
 <br>
 <hr><br>
-</p>
-<p>
+
 <h1 id="updates">Status Updates: 2019/08/27 ~ 2019/10/12</h1>
-</p>
-<h2 id="October 12">October 12</h2>
+
+<h2>October 12</h2>
 <p>
 The interpreter is now self-hosting. A C99 compiler and a JRE are required.
 Here are the steps to reproduce it:
@@ -244,7 +236,7 @@ If <code>Lateral.class</code> is replaced with <code>LateralB.class</code> and t
 commands are run again, the new <code>LateralB.class</code> will be an exact replica of
 the old one.
 </p>
-<h2 id="October 4">October 4</h2>
+<h2>October 4</h2>
 <p>
 The compilation target is now going to be JVM Bytecode. It's more fun than
 compiling to C. This also has the side effect of opening up the possibility of
@@ -264,7 +256,7 @@ not designed for first class functions. Anonymous functions are like let
 statements, but clojures and passing functions as objects will be interesting
 to compile.
 </p>
-<h2 id="September 9">September 9</h2>
+<h2>September 9</h2>
 <p>
 Code destructuring is mostly complete. Compiling to C is coming up on the
 horizon. Here is an example of the current code compiling the distance formula:
@@ -289,17 +281,15 @@ function <code>la_diff</code>, which implements subtraction. The code should rea
 Next, I want to implement the <code>if</code> special form, which should allow me to
 compile most of <code>core.lisp</code> into C.
 </p>
-<h2 id="August 27">August 27</h2>
+<h2>August 27</h2>
 <p>
 I consider the interpreter be mostly feature complete. It can read a lisp file
 from disk and interpret it. The most important special forms have been
 implemented, as well as macros. I will definitely need string manipulation
 for compiling to C, but they have yet to be written.
 </p>
-</section>
-<br>
-<hr>
+<br><hr>
 <p><a href="index.html">Home</a></p>
-<p>Last updated on 2020-03-29</p></div>
+<p>Last updated on 2020-03-29</p>
 </body>
 </html>
