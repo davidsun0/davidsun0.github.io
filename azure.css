@@ -56,14 +56,22 @@ a{
 
 p, li{
     font-size: 16px;
-    line-height: 1.2;
+    line-height: 1.4;
     max-width: 40em;  /* limits lines to ~90 characters */
+}
+ 
+hr{
+    /* makes hr only one horizontal line */
+    border-left: none;
+    border-right: none;
+    border-bottom: none;
+    border-top: thin solid #808080;
 }
 
 code{
     white-space: pre;
     background: #D0D0D0;
-    padding: 0 3px 0 3px;
+    padding: 0 4px 0 4px;
     word-wrap: break-word;
 }
 
@@ -74,10 +82,8 @@ code{
     overflow: auto;
 }
 
-hr{
-    /* makes hr only one horizontal line */
-    border-left: none;
-    border-right: none;
-    border-bottom: none;
-    border-top: thin solid #808080;
+blockquote{
+    background: #E8E8E8;
+    padding: 8px 16px 8px 16px;
+    border-left: 4px solid #0050D0;
 }
