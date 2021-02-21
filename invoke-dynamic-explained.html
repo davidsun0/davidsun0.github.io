@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en-US">
+<head>
+<meta charset="utf-8">
+
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#0050D0">
+
+<meta name="author" content="David Sun">
+<link rel="stylesheet" type="text/css" href="azure.css">
+<link rel="icon" type="image/png" href="favicon-32x32.png" sizes="32x32">
+<link rel="icon" type="image/png" href="favicon-16x16.png" sizes="16x16">
+<title>
+JVM's invoke dynamic explained</title>
+</head>
+
+<body>
+<div id="title">
+<svg width="3em" height="3em">
+    <a href="index.html">
+        <rect class="signum" x="0" y="0" width="3em" height="3em" rx="0.5em" ry="0.5em">
+    </a>
+</svg>
+<h1>
+JVM's invoke dynamic explained</h1>
+</div>
+<div id="content">
+<p>
+The Java Virtual Machine (JVM) is a popular compilation target for programming languages. All the complexity of a language must be compiled to the 200-some instructions that the JVM provides. While most of them are self explanatory, invoke dynamic is special. It does not have any analog in Java. It cannot be directly used by Java programs. There is no instruction like it in other virtual machines like Lua or Python's bytecode interpreter. However, InvokeDynamic is an extremely powerful instruction. As its name suggests, it is foundational for building dynamic languages on the JVM, which is statically typed. InvokeDynamic was built to accommodate dynamic JVM languages and understanding it will let you create your own dynamic language. </p>
+<p>
+There are few resources explaining the instruction on the internet as for most programmers, it is an implementation detail in languages' compilers and not a regular programming tool. As such, the few articles detailing the use of InvokeDynamic are highly technical and geared towards experienced compiler writers. </p>
+<p>
+This guide is for casual users of invoke dynamic - i.e. amateur compiler writers looking to target the JVM for their dynamic language. </p>
+<h1 id="What-is-invoke-dynamic?">What is invoke dynamic?</h1>
+<p>
+At its core, invoke dynamic is a stand in for a regular method call. During runtime, a method is "installed" and effectively replaces the invoke dynamic instruction. From then on, the program acts as if the installed method had been there the entire time. </p>
+<p>
+More complex behavior can be built on top of invoke dynamic with the <code class="inline">java.lang.invoke</code> pacakge. </p>
+<p>
+One of the features of invoke dynamic is to provide better performance over reflection. Invoke dynamic is intended to compliment reflection, not replace it. Be aware that invokedyanmic cannot replace reflection all of the time and invoke dynamic can do more than just replicate reflection. </p>
+<h1 id="Dynamically-typed-languages">Dynamically typed languages</h1>
+<p>
+First of all, what is a dynamic language? </p>
+<p>
+Every method in Java must explicitly declare the types of its arguments and its return type. Every class field and every variable must state what type it is (or the compiler infers the type when using the <code class="inline">var</code> keyword). </p>
+<p>
+On the other hand, dynamic languages like Ruby or Python don't do type checking at compile time. All type checking is performed on the fly, and type errors are runtime errors instead of compiler errors. The best possible description for objects is often <code class="inline">java.lang.Object</code>. As a result, there is a lot of <code class="inline">instanceof</code> and reflection in the compiled code, which have performance penalties. </p>
+<p>
+Both Java and the JVM have safety as a main feature. This includes type safety. As a statically typed language, the compiler makes sure that code is <em>type safe</em> -  objects have to be explicity cast from one type to another. To provide this type safety, Java has strict requirements when calling a function. The types of all the arguments and the type of the return value must be known. </p>
+<h1 id="Invoke-dynamic-use-cases">Invoke dynamic use cases</h1>
+<h2 id="Calling-a-method-without-knowing-its-types">Calling a method without knowing its types</h2>
+<p>
+This is the use case I saw the most. Often times, programs want to call a method based off of an object's type, but that type is unknown at compile time. When that types is gauranteed to stay the same, invoke dynamic can select the right method to call at runtime with the instanceof command. </p>
+<p>
+If you want to dynamically switch methods based off of the argument's type, then you're looking for a feature which invoke dynamic doesn't support out of the box. This behavior is <em>multiple dispatch</em>, which invoke dynamic cannot perform. While invoke dynamic is powerful, it still is a "low level" feature. However, <code class="inline">jdk.dynalink</code> does build multiple dispatch on top of invoke dynamic. It was developed for and used in Nashorn, a JVM Javascript implementation. Dynalink now exists as a part of the JDK. </p>
+<p>
+In Java, dispatch only occurs on non-static methods with the object it's called on. The JVM has dynamic disptach based on the object identity: <code class="inline">object.toString()</code> calls the appropriate method based on <code class="inline">object</code>'s true type. But the JVM does not allow for dispatch based on method arguments. </p>
+<p>
+This example shows how Java does not have multiple dispatch: </p>
+<pre class="codeBlock"><code>public class TestGadget {
+    static void identify(Integer i) {
+        System.out.println(i + " is an Integer!");
+    }
+
+    static void identify(String s) {
+        System.out.println(s + " is a String!");
+    }
+
+    static void identify(Object object) {
+        System.out.println("Not sure what " + object.toString() + " is.");
+    }
+
+    public static void main(String[] args) {
+        Object actuallyAnInt = 12345;
+        Object actuallyAString = "Hello World!";
+        TestGadget.identify(actuallyAnInt);
+        TestGadget.identify(actuallyAString);
+    }
+}
+</code></pre>
+<p>
+This code outputs: </p>
+<pre class="codeBlock"><code>Not sure what 12345 is.
+Not sure what Hello World! is.
+</code></pre>
+<p>
+The Object version of the identify method is called just because the arguments were cast to objects. Even though <code class="inline">actuallyAnInt</code> is best described as an <code class="inline">Integer</code>, it is considered an Object at compile time. </p>
+<h2 id="Calling-a-method-that-doesn't-exist-yet">Calling a method that doesn't exist yet</h2>
+<p>
+Invokedyanmic can be helpful when your code needs to interface with code that doesn't exist yet. The JVM allows for classes to be generated at runtime. Your library may have to integrate with user code. </p>
+<p>
+With invoke dynamic, you can find the method you want to call at runtime and that method call is essentially "installed" into the code. This eliminates the overhead of reflection and allows the JVM to perform optimizations as if the method had been directly called. </p>
+<h2 id="Swapping-or-modifying-methods">Swapping or modifying methods</h2>
+<p>
+The <code class="inline">java.lang.invoke</code> library gives ways to change an invoke dynamic call site during the course of the program. MutableCallSite and VolatileCallSite can change the method of the site after binding. Both can be modified with the <code class="inline">setTarget</code> method - VolatileCallSite is synchronized across threads, but is slower than MutableCallSite. This allows code to be redefined and modified long after compilation. </p>
+<p>
+One of the more surprising ways to use invoke dynamic is to modify a method before it is installed by invoke dynamic. It can change the behavior of existing methods  or piece together methods and control statements in a way that verges on writing new code at runtime (with some limitations). </p>
+<p>
+For example, you can... </p>
+<ul>
+<li>insert, remove, reorder, and preprocess arguments </li>
+<li>pack and unpack arguments to and from arrays </li>
+<li>bind objects or constants to calls </li>
+<li>generate <code class="inline">if</code> expressions, <code class="inline">for</code>, <code class="inline">while</code> loops, exception throwing and handling and more! </li>
+</ul>
+<p>
+MethodHandles can also create new MethodHandles. It can convert actions like accessing arrays, modifying fields, trowing exceptions, and creating constant values into MethodHandle objects. </p>
+<h1 id="Making-invoke-dynamic-programs">Making invoke dynamic programs</h1>
+<p>
+As of 2021, Java cannot call invoke dynamic. The compiler uses it internally to create lambdas and perform string concatenation, but does not let programmers use the instruction directly. </p>
+<p>
+Use the <a href="https://asm.ow2.io/">ASM Library</a> for generating class files with invoke dynamic code. The Java compiler and other JVM compilers use it for code generation. It handles all of the low level details of generating JVM class files. ASM can also be used to write out a class file to a byte array, which can then be used to load code directly into the running JVM instance. </p>
+<p>
+Alternatively, read the <a href="https://docs.oracle.com/javase/specs/jvms/se7/html/jvms-4.html#jvms-4.4.10">JVM specification</a>, which describes the binary class format and create class files by hand. </p>
+<h1 id="How-invoke-dynamic-works">How invoke dynamic works</h1>
+<p>
+First, some terminology: The location of the invoke dynamic instruction is called the <em>call site</em>. A <em>bootstrap method</em> makes or finds a CallSite object to be linked at the call site. </p>
+<p>
+The bootstrap method returns a <code class="inline">java.lang.invoke.CallSite</code> object which is linked to the call site. Each CallSite contains a target method to call. </p>
+<h2 id="Java's-other-invoke-instructions">Java's other invoke instructions</h2>
+<p>
+Before invoke dynamic, there were only four invoke instructions. Each calls a method in a specific context: </p>
+<ul>
+<li>invokestatic for static methods </li>
+<li>invokeinterface for interface methods </li>
+<li>invokespecial for static and object initializers </li>
+<li>invokevirtual for <a href="https://en.wikipedia.org/wiki/Virtual_function">virtual methods</a> </li>
+</ul>
+<p>
+Virtual methods are typical method calls on an object like <code class="inline">myObject.doSomething();</code>. </p>
+<p>
+Unlike the other members of the invoke family, invoke dynamic isn't made for calling a certain type of method, it's for calling methods <em>at a certain time</em>. At runtime, an actual method will be looked up with a bootstrap method in a process similar to Java's reflection API. An invoke dynamic instruction only contains information about what kind of method will replace it: the method's type, number of arguments, and arguments for the bootstrap method to use to find the appropriate method. </p>
+<h2 id="The-invoke-dynamic-lifetime">The invoke dynamic lifetime</h2>
+<p>
+When the code execution first reaches the call site, it calls the bootstrap method. The bootstrap method returns a CallSite object, which is linked at the invoke dynamic instruction. From then on, when the code reaches the invoke dynamic instruction, it directly calls the CallSite target and the bootstrap method is no longer used. </p>
+<p>
+MethodHandle is similar to Method. Both represent a JVM method, but CallSites can only use MethodHandle objects. Often, the two are used together like this: the bootstrap method uses reflection to search for a method and then uses <code class="inline">MethodHandles.Lookup.unreflect()</code> to convert the Method into a MethodHandle. </p>
+<p>
+Alternatively, a MethodHandle can be found directly with <code class="inline">MethodHandles.Lookup</code>. A Lookup object is safer than reflection as it obeys access rules (e.g. it can't access private fields or methods). By default, the bootstrap method is passed a Lookup object with the permissions of the caller (where the invoke dynamic instruction came from). </p>
+<pre class="codeBlock"><code>void myMethod() {
+    ...
+
+    // this is pseudocode; invoke dynamic cannot be called directly in Java.
+    invokedynamic(
+        // bootstrap arguments (these are compile-time constants)
+        "myDynamicMethod", MethodType.methodType(...),
+        
+        // bootstrap method to use
+        MyClass::myBootstrapMethod);
+}
+
+
+public static CallSite myBootstrapMethod(MethodHandles.Lookup lookup,
+    String methodName, MethodType expectedType) {
+    // lookup has the same access permissions as the class myMethod belongs to
+    // when called by myMethod, methodName will be "myDynamicMethod"
+
+    // your code here
+    return callSite;
+}
+</code></pre>
+<p>
+The invoke dyanmic specifies a bootstrap method, the expected method name, argument types, and return type. The name and type are constants that are associated with the invoke dynamic instruction. The JVM will throw an exception if the CallSite returned by the bootstrap method doesn't match the invoke dynamic instruction's method type. In this way it is still quite similar to the other invoke instructions. </p>
+<p>
+The Lookup object is generated by the JVM automatically. Aside from the Lookup, String, and MethodType arguments as shown in the example above, the invoke dynamic can also pass constant arguments to the bootstrap method. These additional arguments must be Java primitives or Strings. Of course, the bootstrap method must also be changed to accept more arguments. </p>
+<p>
+Bootstrap doesn't have to be <code class="inline">public static</code>, an object can call its own non-static or private bootstrap method. </p>
+<h1 id="Dynamic-constants">Dynamic constants</h1>
+<p>
+Dynamic constants are a closely related feature to invoke dynamic. Like invoke dynamic, a dynamic constant stands in for some value which is unknown at compile time. The first time a dynamic constant instruction is run, it calls a constant bootstrap method that returns an object. The object then acts like a constant value. </p>
+<p>
+The signature of the bootstrap method is somewhat different: </p>
+<pre class="codeBlock"><code>T myConstantBootstrap(MethodHandle.Lookup lookup, String name, Class<?> expectedType) {
+    // return type T must match the expected type
+    return new T();
+}
+</code></pre>
+<p>
+Unlike invoke dynamic, there is not a corresponding instruction. Instead, the <code class="inline">ldc</code> instruction, which is used to load other values, also loads dynamic constants. If the target of the ldc instruction in the constant pool is a <code class="inline">CONSTANT_Dynamic_info</code>, then ldc will perform dynamic bootstrapping. </p>
+<p>
+As with invoke dynamic, extra information can be passed to the bootstrap method in the form of primitive values and Strings. </p>
+<h1 id="Things-I-don't-know">Things I don't know</h1>
+<p>
+This is what is known in the literature as the "further research" section. </p>
+<ul>
+<li>Can different objects have different bound methods? (probably not, it seems) </li>
+<li>Are CallSites garbage collected if the Class with the invoke dynamic instruction is collected? </li>
+<li>What is the performance of invoke dynamic relative to the other invoke instructions? </li>
+</ul>
+<p>
+As a disclaimer, I do not use invoke dynamic professionally and have not delved into the JVM source code. This article was partially written as a way to organize my ideas. I published it in hopes that it will be a useful explanation for other hobyist compiler writers. </p>
+<h1 id="Further-Reading">Further Reading</h1>
+<ul>
+<li><a href="https://en.wikipedia.org/wiki/Dynamic_programming_language">Dynamic Programming Language (Wikipedia)</a> </li>
+<li><a href="https://www.infoq.com/articles/Invokedynamic-Javas-secret-weapon/">Invokedynamic - Java's Secret Weapon</a> </li>
+<li><a href="https://www.javaworld.com/article/2860079/invokedynamic-101.html">Invokedynamic 101</a> </li>
+<li><a href="http://blog.headius.com/2007/01/invokedynamic-actually-useful.html">InvokeDynamic: Actually Useful?</a> </li>
+<li><a href="http://blog.headius.com/2008/09/first-taste-of-invokedynamic.html">A First Taste of InvokeDynamic</a> </li>
+<li><a href="http://blog.headius.com/2011/08/invokedynamic-in-jruby-constant-lookup.html">Invokedynamic in JRuby: Constant Lookup</a> </li>
+<li><a href="https://github.com/Sable/soot/wiki/Java%27s-Invokedynamic">Java's Invokedynamic</a> </li>
+</ul>
+<br><hr>
+<p><a href="index.html">Home</a></p>
+<p class="note">Created on 2020-05-06 - Last updated on 2021-02-21</p></div>
+</body>
+</html>

@@ -6,84 +6,149 @@
     background-color: #BBDEFB;
 }
 
-body{
-    margin: 0;
+body {
     font-family: sans-serif;
-    height: 100%;
-    background: #FCFCFC;
+    background: #FFF;
     font-size: 16px;
-    padding: 0 10% 1em 10%;
+    height: 100%;
+    margin: 0;
 }
 
-@media only screen and (min-width: 840px){
-    body{
-        padding-left: 20%;
-        padding-right: 20%;
+#content {
+    margin: auto;
+    padding: 16px;
+}
+
+@media only screen and (min-width: 840px) {
+    #content {
+        width: 44em; /* limits lines to ~90 characters */
+        padding: 0;
     }
 }
 
-rect{
+#title {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+#title h1 {
+    font-size: 2.5em;
+    color: #0050D0;
+    text-align: center;
+}
+
+/* blue block in title */
+#title svg {
+    margin-right: 1em;
+    align-self: center;
+}
+
+.signum {
     fill: #0050D0;
 }
 
-.title{
-    font-size: 2.2em;
-    color: #0050D0;
-}
-
-h1{
+h1 {
     font-size: 2em;
 }
 
-h2{
+h2 {
     font-size: 1.8em;
 }
 
-h3{
+h3 {
     font-size: 1.6em;
 }
 
-h1, h2, h3, h4, h5, h6{
+h1, h2, h3, h4, h5, h6 {
     font-weight: normal;
-    color: #202020;
+    color: #222;
 }
 
-a{
+a {
     font-size: inherit;
-    color: #4040A0;
+    color: #44A;
     text-decoration: underline;
 }
 
-p, li{
-    font-size: 16px;
+p {
     line-height: 1.4;
-    max-width: 40em;  /* limits lines to ~90 characters */
 }
- 
-hr{
+
+@media only screen and (min-width: 840px) {
+    p {
+    }
+}
+
+li {
+    line-height: 1.4;
+}
+
+img {
+    max-width: 80%;
+    display: block;
+    margin: auto;
+}
+
+hr {
     /* makes hr only one horizontal line */
     border-left: none;
     border-right: none;
     border-bottom: none;
-    border-top: thin solid #808080;
+    border-top: 2px solid #0050D0;
 }
 
-code{
+.inline {
     white-space: pre;
-    background: #D0D0D0;
+    background: #EEE;
     padding: 0 4px 0 4px;
     word-wrap: break-word;
 }
 
-.codeBlock{
-    display: block;
-    padding: 1em 2em 1em 2em;
-    word-wrap: normal;
+.codeBlock {
+    padding: 16px;
     overflow: auto;
+    background: #EEE;
+    border: 1px solid #DDD;
 }
 
-blockquote{
-    background: #E8E8E8;
+blockquote {
+    background: #EEE;
     padding: 8px 16px 8px 16px;
     border-left: 4px solid #0050D0;
+}
+
+.note {
+    color: #888;
+    font-size: 12px;
+}
+
+/* code highlighting */
+.lisp-paren {
+    color: #888;
+}
+
+.lisp-comment {
+    color: #888;
+}
+
+.lisp-symbol {
+    color: #000;
+}
+
+.lisp-string {
+    color: #FA5;
+}
+
+.lisp-token {
+    color: #08F;
+}
+
+.lisp-param {
+    color: #0D6;
+}
+
+.lisp-special {
+    color: #BDF;
 }

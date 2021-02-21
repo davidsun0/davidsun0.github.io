@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en-US">
+<head>
+<meta charset="utf-8">
+
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#0050D0">
+
+<meta name="author" content="David Sun">
+<link rel="stylesheet" type="text/css" href="azure.css">
+<link rel="icon" type="image/png" href="favicon-32x32.png" sizes="32x32">
+<link rel="icon" type="image/png" href="favicon-16x16.png" sizes="16x16">
+<title>
+Common Lisp Cheat Sheet</title>
+</head>
+
+<body>
+<div id="title">
+<svg width="3em" height="3em">
+    <a href="index.html">
+        <rect class="signum" x="0" y="0" width="3em" height="3em" rx="0.5em" ry="0.5em">
+    </a>
+</svg>
+<h1>
+Common Lisp Cheat Sheet</h1>
+</div>
+<div id="content">
+<h1 id="File-and-Stream-I/O">File and Stream I/O</h1>
+<p>
+Open a file </p>
+<pre class="codeBlock"><code><span class="lisp-paren">(</span><span class="lisp-symbol">with-open-file </span><span class="lisp-paren">(</span><span class="lisp-symbol">stream path </span><span class="lisp-param">&rest </span><span class="lisp-symbol">options</span><span class="lisp-paren">)
+  </span><span class="lisp-symbol">body</span><span class="lisp-paren">)
+
+</span><span class="lisp-comment">;; example
+</span><span class="lisp-paren">(</span><span class="lisp-symbol">with-open-file </span><span class="lisp-paren">(</span><span class="lisp-symbol">f </span><span class="lisp-string">"./path/to/file.txt"
+                   </span><span class="lisp-token">:direction :input</span><span class="lisp-paren">)
+  (</span><span class="lisp-symbol">read-line f</span><span class="lisp-paren">))
+
+</span><span class="lisp-comment">;; write a binary file, replacing it if it exists
+</span><span class="lisp-paren">(</span><span class="lisp-symbol">with-open-file </span><span class="lisp-paren">(</span><span class="lisp-symbol">f </span><span class="lisp-string">"path/to/file.png"
+                   </span><span class="lisp-token">:direction    :output
+                   :element-type </span><span class="lisp-symbol">'unsigned-byte
+                   </span><span class="lisp-token">:if-exists    :supersede</span><span class="lisp-paren">)
+  (</span><span class="lisp-symbol">loop for i in '</span><span class="lisp-paren">(</span><span class="lisp-symbol">#x89 #x50 #x4E #x47 #x0D #x0A #x1A #x0A</span><span class="lisp-paren">)
+        (</span><span class="lisp-symbol">write-byte i f</span><span class="lisp-paren">)))</span></code></pre>
+<p>
+Options: </p>
+<ul>
+<li>read <code class="inline">:direction :input</code> </li>
+<li>write <code class="inline">:direction :output</code> </li>
+<li>binary <code class="inline">:element-type &#x27;unsinged-byte</code> </li>
+<li>replace if file exists <code class="inline">:if-exists :supersede</code> </li>
+</ul>
+<p>
+The path can be a path object. </p>
+<p>
+When reading a binary stream, you must use <code class="inline">read-byte</code>. </p>
+<ul>
+<li><code class="inline">read</code> S-expression </li>
+<li><code class="inline">read-byte</code> unsigned byte </li>
+<li><code class="inline">read-char</code> Lisp character (supports unicode?) </li>
+<li><code class="inline">read-line</code> line of text </li>
+<li><code class="inline">read-sequence</code> reads text or binary in bulk </li>
+</ul>
+<ul>
+<li><code class="inline">write-byte</code> </li>
+<li><code class="inline">write-char</code> </li>
+<li><code class="inline">write-line</code> </li>
+</ul>
+<p>
+<a href="http://www.gigamonkeys.com/book/files-and-file-io.html">Files and File I/O - Practical Common Lisp</a> </p>
+<h1 id="Format">Format</h1>
+<pre class="codeBlock"><code><span class="lisp-paren">(</span><span class="lisp-symbol">format destination control-string </span><span class="lisp-param">&rest </span><span class="lisp-symbol">format-arguments</span><span class="lisp-paren">)
+
+</span><span class="lisp-comment">;; write to standard out
+</span><span class="lisp-paren">(</span><span class="lisp-symbol">format t </span><span class="lisp-string">"the value of pi is ~A" </span><span class="lisp-symbol">pi</span><span class="lisp-paren">)
+</span><span class="lisp-symbol">the value of pi is 3.141592653589793d0
+=> NIL
+
+</span><span class="lisp-comment">;; write to a file
+</span><span class="lisp-paren">(</span><span class="lisp-symbol">format file-stream </span><span class="lisp-string">"write to a file"</span><span class="lisp-paren">)
+
+</span><span class="lisp-comment">;; format into a string by using nil
+</span><span class="lisp-paren">(</span><span class="lisp-symbol">format nil </span><span class="lisp-string">"~A" </span><span class="lisp-symbol">pi</span><span class="lisp-paren">)
+</span><span class="lisp-symbol">=> </span><span class="lisp-string">"3.141592653589793d0"</span></code></pre>
+<p>
+Control characters: <code class="inline">~A</code> or <code class="inline">~a</code> lisp object <code class="inline">~%</code> new line <code class="inline">~~</code> tilde </p>
+<p>
+<code class="inline">~(~A~)</code> lowercase <code class="inline">~@:(~A~)</code> upper case <code class="inline">~@(~A~)</code> capitalize first word <code class="inline">~:(~A~)</code> capitalize every word </p>
+<p>
+<code class="inline">~{~A~}</code> print objects in a list (but not a vector) </p>
+<pre class="codeBlock"><code><span class="lisp-comment">;; print a list (notice the trailing new line)
+</span><span class="lisp-paren">(</span><span class="lisp-symbol">format nil </span><span class="lisp-string">"~{~A~%~}" </span><span class="lisp-symbol">'</span><span class="lisp-paren">(</span><span class="lisp-symbol">a b c d e</span><span class="lisp-paren">))
+</span><span class="lisp-symbol">=> </span><span class="lisp-string">"a
+b
+c
+d
+e
+"
+
+</span><span class="lisp-comment">;; you can put multiple ~A to iterate by several items at once
+</span><span class="lisp-paren">(</span><span class="lisp-symbol">format nil </span><span class="lisp-string">"~{~A ~A~%~}" </span><span class="lisp-symbol">'</span><span class="lisp-paren">(</span><span class="lisp-symbol">a b c d e f</span><span class="lisp-paren">))
+</span><span class="lisp-symbol">=> </span><span class="lisp-string">"a b
+c d
+e f
+"
+
+</span><span class="lisp-comment">;; throws an error because the are an odd number of items
+</span><span class="lisp-paren">(</span><span class="lisp-symbol">format nil </span><span class="lisp-string">"~{~A ~A~%~}" </span><span class="lisp-symbol">'</span><span class="lisp-paren">(</span><span class="lisp-symbol">a b c</span><span class="lisp-paren">))
+</span><span class="lisp-symbol">=> error in FORMAT: No more arguments</span></code></pre>
+<p>
+<code class="inline">~^</code> print something after every item in a list except the last </p>
+<pre class="codeBlock"><code><span class="lisp-comment">;; print a hyphen between each item
+</span><span class="lisp-paren">(</span><span class="lisp-symbol">format nil </span><span class="lisp-string">"~{~A~^-~}" </span><span class="lisp-symbol">'</span><span class="lisp-paren">(</span><span class="lisp-symbol">1 2 3 4</span><span class="lisp-paren">))
+</span><span class="lisp-symbol">=> </span><span class="lisp-string">"1-2-3-4"</span></code></pre>
+<h1 id="Loop">Loop</h1>
+<h1 id="Equality">Equality</h1>
+<p>
+<code class="inline">eq</code> symbols, checks for same object in memory (pointer comparison) Symbols work because of intern. </p>
+<p>
+<code class="inline">eql</code> numbers, characters </p>
+<pre class="codeBlock"><code>(eql 3 3)
+=> t
+(eql 3 3.0)
+=> nil
+</code></pre>
+<p>
+<code class="inline">equal</code> cons cells <code class="inline">equalp</code> characters of different case, arrays, hash tables </p>
+<p>
+<a href="http://www.cs.cmu.edu/Groups/AI/html/cltl/clm/node74.html">Equality Predicates - Common Lisp the Language 2nd Ed</a> </p>
+<br><hr>
+<p><a href="index.html">Home</a></p>
+<p class="note">Last updated on 2021-02-19</p></div>
+</body>
+</html>
