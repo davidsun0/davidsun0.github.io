@@ -26,9 +26,11 @@ JVM's invoke dynamic explained</h1>
 </div>
 <div id="content">
 <p>
-The Java Virtual Machine (JVM) is a popular compilation target for programming languages. All the complexity of a language must be compiled to the 200-some instructions that the JVM provides. While most of them are self explanatory, invoke dynamic is special. It does not have any analog in Java. It cannot be directly used by Java programs. There is no instruction like it in other virtual machines like Lua or Python's bytecode interpreter. However, InvokeDynamic is an extremely powerful instruction. As its name suggests, it is foundational for building dynamic languages on the JVM, which is statically typed. InvokeDynamic was built to accommodate dynamic JVM languages and understanding it will let you create your own dynamic language. </p>
+The Java Virtual Machine (JVM) is a popular compilation target for programming languages. All the complexity of a language must be compiled to the 200-some instructions that the JVM provides. While most of them are self explanatory, invoke dynamic is special. It does not have any analog in Java. It cannot be directly used by Java programs. There is no instruction like it in other virtual machines like Lua or Python's bytecode interpreter. </p>
 <p>
-There are few resources explaining the instruction on the internet as for most programmers, it is an implementation detail in languages' compilers and not a regular programming tool. As such, the few articles detailing the use of InvokeDynamic are highly technical and geared towards experienced compiler writers. </p>
+However, invoke dynamic is an extremely powerful instruction. As its name suggests, it is foundational for building dynamic languages on the JVM, which is statically typed. InvokeDynamic was built to accommodate dynamic JVM languages and understanding it will let you create your own dynamic language. </p>
+<p>
+There are few resources explaining the instruction on the internet as for most programmers, it is an implementation detail in languages' compilers and not a regular programming tool. As such, the few articles detailing the use of invoke dynamic are highly technical and geared towards experienced compiler writers. </p>
 <p>
 This guide is for casual users of invoke dynamic - i.e. amateur compiler writers looking to target the JVM for their dynamic language. </p>
 <h1 id="What-is-invoke-dynamic?">What is invoke dynamic?</h1>
