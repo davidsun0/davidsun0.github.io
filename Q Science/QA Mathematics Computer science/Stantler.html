@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Stantler - ANTLR Clone in Common Lisp</title>
+<link href="../../style.css" rel="stylesheet"/>
+<meta name="viewport" content="width=device-width"/>
+</head>
+<body>
+<h1>Stantler - ANTLR Clone in Common Lisp</h1>
+<p>This project isn't serious and isn't built for compatibility or performance. Just having fun making parser generators. :)</p>
+<h2>Objective</h2>
+<p>The goal is to make a self-hosting parser generator. ANTLR automatically generates a parser and lexer from grammar definitions. I think it would be cool to do the same thing in Common Lisp. Unlike Java, the original implementation language for ANTLR, I can do fun stuff like directly create a parser in memory from a text file.</p>
+<h2>Bootstrapping Strategy</h2>
+<p>Since there's a grammar definition for the ANTLR grammar itself, it's possible to bootstrap a parser by handwriting only the original tokenizer and lexer.</p>
+<p>There are only a few things needed
+- A set of core matching rules (and, or, repeats, etc)
+- Tokenizer rules
+- Parser rules</p>
+<p>Writing out all of the parser rules is a little annoying. It is a bit repetitive, but there are surprisingly easy ways to mitigate mistakes. It was much easier to tokenize and parse the entire input than I expected.</p>
+<p>Once the input is parsed into a tree, the exciting part (for me) is being able to transform this tree into code. This is where Common Lisp shines.</p>
+<h2>The Unexpected</h2>
+<ul>
+<li>The tokenizer inserts an EOF token at the end of input</li>
+<li>The token type (usually the rule that produced it) can be modified by the tokenizer<ul>
+<li>The ANLTR tokenizer contains a state machine!</li>
+</ul>
+</li>
+</ul>
+<p><a href="../../index.html">Home</a> &gt; <a href="../Q%20Science.html">Q Science</a> &gt; <a href="QA%20Mathematics%20Computer%20science.html">QA Mathematics Computer science</a> &gt; Stantler - ANTLR Clone in Common Lisp</p></body>
+</html>

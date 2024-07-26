@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Lem</title>
+<link href="../../style.css" rel="stylesheet"/>
+<meta name="viewport" content="width=device-width"/>
+</head>
+<body>
+<h1>Lem</h1>
+<p>Lem is a text editor written in Common Lisp. It's supposed to be a "clone" of Emacs, but Lem does not have all the features and modes that Emacs does (as of 2024).</p>
+<h2>Benefits of Common Lisp over Emacs Lisp</h2>
+<ul>
+<li>Language semantics allows for faster Common Lisp code<ul>
+<li>Emacs Lisp is interpreted, not compiled, to my knowledge</li>
+<li>SBCL compiles Common Lisp to very efficient machine code</li>
+</ul>
+</li>
+</ul>
+<h2>Hacking</h2>
+<h3>Setting up a development environment</h3>
+<p>Lem debugee:</p>
+<p><code>M-x start-lisp-repl
+CL-USER&gt; (micros:create-server :dont-close t)</code></p>
+<p>Emacs or Lem development environment:</p>
+<p><code>M-x slime-connect</code></p>
+<h3>Running test cases</h3>
+<p><code>lisp
+(ql:quickload '(:lem-vi-mode/tests))
+(rove:run-suite :lem-vi-mode/tests/operator)
+(rove:run :lem-vi-mode/tests)</code></p>
+<h3>Print Debugging</h3>
+<p><code>lisp
+(lem-core::log-message format-string arguments)
+;; Syntax is slightly different from format
+(lem-core::log-message "~A~%" (list "Hello World!"))</code></p>
+<h2>Bugs I need to report</h2>
+<h2>cc does not enter insert mode on trailing newline</h2>
+<p>In the following situation, the <code>cc</code> command does not enter insert mode. The brackets represent the cursor.</p>
+<p><code>abc
+[]</code></p>
+<hr />
+<p>Created <time datetime="2024-06-19">2024-06-19</time>. </p>
+<p><a href="../../index.html">Home</a> &gt; <a href="../Q%20Science.html">Q Science</a> &gt; <a href="QA%20Mathematics%20Computer%20science.html">QA Mathematics Computer science</a> &gt; Lem</p></body>
+</html>

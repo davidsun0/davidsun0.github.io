@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Querying Wikidata with SPARQL</title>
+<link href="../../style.css" rel="stylesheet"/>
+<meta name="viewport" content="width=device-width"/>
+</head>
+<body>
+<h1>Querying Wikidata with SPARQL</h1>
+<p>During a conversation with friends, the question of what cities in the US are sisters with what cities in Japan. How would you know? How would you find out?</p>
+<p>Since I'm a programmer, it's tempting to whip out the Python and scrape Wikipedia. However, there's a much better option: using Wikidata.</p>
+<p>Wikidata has Wikipedia's data, but structured in a triple store.</p>
+<p>Unlike a relational database, a triple store saves data in triplets representing a relationship: subject - predicate - object. And like a relational database, triple store databases have a query language.</p>
+<p>Unfortunately, for the sake to namespacing and localization, predicates are assigned alphanumerical codes. It helps to have a Wikidata tab open to look up predicate names.</p>
+<p>Wikidata lets you write and run queries at <a href="https://query.wikidata.org">query.wikidata.org</a>. The web interface also comes with helpful visualization options: for example, in this exercise, adding <code>#defaultView:Map</code> plots geographic data on a world map.</p>
+<p>When writing these queries, it becomes painfully obvious how messy the real world is. In this example, finding "US cities with Japanese sister cities", the only well defined terms are "United States" and "Japan". There is no predicate for sister cities, only the more general <code>wdt:P190</code> for twinned administrative body. Similarly, the terminology of city is vague too. New York City is sister cities with Tokyo, but under Japanese definition, Tokyo is a metropolis (都), similar to a prefecture, not a city (市). This is the result of differing government definitions of city and the data entry in Wikidata.</p>
+<p>This is what I came up with, learning SPARQL as I went along:</p>
+<p>```SPARQL</p>
+<h1>defaultView:Map</h1>
+<p>SELECT DISTINCT ?usaPlace ?usaPlaceLabel ?geo ?jpnPlace ?jpnPlaceLabel WHERE {
+  SERVICE wikibase:label { bd:serviceParam wikibase:language "en". }
+  {
+    ?usaPlace (wdt:P17/(wdt:P279<em>)) wd:Q30;
+            wdt:P190 ?jpnPlace.
+    ?usaPlace wdt:P1082 ?population.
+    ?usaPlace wdt:P625 ?geo.
+    ?jpnPlace (wdt:P17/(wdt:P279</em>)) wd:Q17.
+  }
+}
+ORDER BY DESC(?population)
+```</p>
+<ul>
+<li><code>#defaultView:Map</code> draws <code>?geo</code> lat-long points onto an interactive world map</li>
+<li><code>SELECT DISTINCT ...</code> This is just like SQL.</li>
+<li><code>?usaPlace (wdt:P17/(wdt:P279*)) wd:Q30</code><ul>
+<li><code>?usaPlace</code> is defined as...</li>
+<li><code>(wdt:P17/(wdt:P279*))</code> something in a country or something in something in a country... (any number of nestings is valid)</li>
+<li><code>wd:Q30</code> and that country is the United States...</li>
+<li><code>wdt:P190 ?jpnPlace.</code> and is a "twinned administrative body" with <code>?jpnPlace</code></li>
+</ul>
+</li>
+<li><code>?jpnPlace (wdt:P17/(wdt:P279*)) wd:Q17.</code><ul>
+<li>Same logic as <code>?usaPlace</code>. Looking for something contained within (<code>wdt:P279</code>) Japan (<code>wd:Q17</code>)</li>
+</ul>
+</li>
+<li><code>?population</code> is the population (<code>wdt:P1082</code>) of <code>?usaPlace</code></li>
+<li><code>?geo</code> is the latitude and longitude (<code>wd:P625</code>) of <code>?usaPlace</code></li>
+</ul>
+<p>I ended up with the broader query of location (rather than strictly city) because it gave interesting results</p>
+<ul>
+<li>Honolulu and Kauai Counties are sisters with Japanese cities</li>
+<li>Several states are sisters with prefectures</li>
+</ul>
+<hr />
+<p>Created <time datetime="2022-05-22">2022-05-22</time>. Updated <time datetime="2024-04-12">2024-04-12</time>. </p>
+<p><a href="../../index.html">Home</a> &gt; <a href="../Q%20Science.html">Q Science</a> &gt; <a href="QA%20Mathematics%20Computer%20science.html">QA Mathematics Computer science</a> &gt; Querying Wikidata with SPARQL</p></body>
+</html>

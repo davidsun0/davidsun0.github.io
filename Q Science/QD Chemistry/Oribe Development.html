@@ -1,0 +1,872 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Developing a Cone 6 Traditional Oribe Glaze</title>
+<link href="../../style.css" rel="stylesheet"/>
+<meta name="viewport" content="width=device-width"/>
+</head>
+<body>
+<h1>Developing a Cone 6 Traditional Oribe Glaze</h1>
+<p>In my neck of the woods, there are studios with glazes that say Oribe on them, but they look nothing like the Japanese glazes of the same name (apart from the green color). They're just clear glazes with copper. I've had similar trouble finding recipes on <a href="../QA%20Mathematics%20Computer%20science/Glazy.html">Glazy</a> too. Looks like I'll have to formulate my own Oribe.</p>
+<h2>The essence of Oribe</h2>
+<p>Japanese Oribe glazes are ash glazes. Traditional Oribe ware that's hundreds of years old forms rivulets. When the glaze runs and pools, it shows different shades of green depending on thickness. This is the essence of Oribe.</p>
+<p>Modern Japanese potters' Oribe glazes are also sometimes blue, which is also a product of using wood ash. Most likely the effect is caused by phosphorus phase separation.</p>
+<p>Traditionally, there are also black Oribe glazes (kuro oribe), but for this project, I'm only focusing on the more common green variety.</p>
+<h2>Finding a Japanese recipe</h2>
+<p>Luckily, there are Japanese recipes online for Oribe glaze. They ingredients are also Japanese, but using some chemistry, I can calculate equivalents for American materials.</p>
+<p><a href="https://touroji.com/yuuyakunosyurui/oribeyuu.html">Touroji's Oribe recipe</a> is 6 parts Mikawa Feldspar, 4 parts wood ash, and 4% copper(II) oxide.</p>
+<div class="umf-widget">
+<div>
+<p class="umf-heading">Mikawa Feldspar</p>
+</div>
+<div class="recipe"></div>
+<div class="umf-container">
+<div style="grid-column: 1; grid-row: 1;">
+            <span class="label">
+                <span class="umf-silica">SiO<sub>2</sub></span>:
+                <span class="umf-alumina">Al<sub>2</sub>O<sub>3</sub></span>
+            </span>
+            <br />
+<span class="stats-silica">9.89</span>
+        </div>
+<div style="grid-column: 2; grid-row: 1;">
+            <span class="label">
+                <span class="umf-primary">R<sub>2</sub>O</span>:
+                <span class="umf-secondary">RO</span>
+            </span>
+            <br />
+<span class="stats-primary">0.95</span>:
+            <span class="stats-secondary">0.05</span>
+        </div>
+<div style="grid-column: 3; grid-row: 1;">
+            <span class="label">LOI</span>
+            <br />
+<span class="stats-loi">0.6%</span>
+        </div>
+<div style="grid-column: 1; grid-row 2;">
+            <span class="label">Glass</span>
+            <table class="umf-glass">
+<tr>
+<td class="umf-silica"><span>SiO<sub>2</sub></span></td>
+<td>10.38</td>
+</tr>
+<tr>
+<td class="umf-alumina"><span>Al<sub>2</sub>O<sub>3</sub></span></td>
+<td>1.05</td>
+</tr>
+</table>
+</div>
+<div style="grid-column: 2; grid-row 2;">
+            <span class="label">Flux</span>
+            <table class="umf-flux">
+<tr>
+<td class="umf-primary"><span>Na<sub>2</sub>O</span></td>
+<td>0.38</td>
+</tr>
+<tr>
+<td class="umf-primary"><span>K<sub>2</sub>O</span></td>
+<td>0.58</td>
+</tr>
+<tr>
+<td class="umf-secondary"><span>MgO</span></td>
+<td>0.01</td>
+</tr>
+<tr>
+<td class="umf-secondary"><span>CaO</span></td>
+<td>0.04</td>
+</tr>
+</table>
+</div>
+<div style="grid-column: 3; grid-row 2;">
+            <span class="label">Other</span>
+            <table class="umf-other">
+<tr>
+<td><span>Fe<sub>2</sub>O<sub>3</sub></span></td>
+<td>0.016</td>
+</tr>
+<tr>
+<td><span>TiO<sub>2</sub></span></td>
+<td>0.010</td>
+</tr>
+</table>
+</div>
+</div>
+</div>
+<div class="umf-widget">
+<div>
+<p class="umf-heading">Wood Ash</p>
+</div>
+<div class="recipe"></div>
+<div class="umf-container">
+<div style="grid-column: 1; grid-row: 1;">
+            <span class="label">
+                <span class="umf-silica">SiO<sub>2</sub></span>:
+                <span class="umf-alumina">Al<sub>2</sub>O<sub>3</sub></span>
+            </span>
+            <br />
+<span class="stats-silica">5.94</span>
+        </div>
+<div style="grid-column: 2; grid-row: 1;">
+            <span class="label">
+                <span class="umf-primary">R<sub>2</sub>O</span>:
+                <span class="umf-secondary">RO</span>
+            </span>
+            <br />
+<span class="stats-primary">0.03</span>:
+            <span class="stats-secondary">0.97</span>
+        </div>
+<div style="grid-column: 3; grid-row: 1;">
+            <span class="label">LOI</span>
+            <br />
+<span class="stats-loi">35%</span>
+        </div>
+<div style="grid-column: 1; grid-row 2;">
+            <span class="label">Glass</span>
+            <table class="umf-glass">
+<tr>
+<td class="umf-silica"><span>SiO<sub>2</sub></span></td>
+<td>0.29</td>
+</tr>
+<tr>
+<td class="umf-alumina"><span>Al<sub>2</sub>O<sub>3</sub></span></td>
+<td>0.05</td>
+</tr>
+</table>
+</div>
+<div style="grid-column: 2; grid-row 2;">
+            <span class="label">Flux</span>
+            <table class="umf-flux">
+<tr>
+<td class="umf-primary"><span>Na<sub>2</sub>O</span></td>
+<td>0.01</td>
+</tr>
+<tr>
+<td class="umf-primary"><span>K<sub>2</sub>O</span></td>
+<td>0.02</td>
+</tr>
+<tr>
+<td class="umf-secondary"><span>MgO</span></td>
+<td>0.16</td>
+</tr>
+<tr>
+<td class="umf-secondary"><span>CaO</span></td>
+<td>0.81</td>
+</tr>
+</table>
+</div>
+<div style="grid-column: 3; grid-row 2;">
+            <span class="label">Other</span>
+            <table class="umf-other">
+<tr>
+<td><span>P<sub>2</sub>O<sub>5</sub></span></td>
+<td>0.018</td>
+</tr>
+<tr>
+<td><span>Fe<sub>2</sub>O<sub>3</sub></span></td>
+<td>0.016</td>
+</tr>
+</table>
+</div>
+</div>
+</div>
+<div class="umf-widget">
+<div>
+<p class="umf-heading">Touroji Oribe</p>
+</div>
+<div class="recipe">
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Material</th>
+<th style="text-align: right;">Percent</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><span>Mikawa Feldspar</span></td>
+<td style="text-align: right;">60</td>
+</tr>
+<tr>
+<td style="text-align: left;"><span>Wood Ash</span></td>
+<td style="text-align: right;">40</td>
+</tr>
+<tr>
+<td style="text-align: left;"><span>Black Copper Oxide</span></td>
+<td style="text-align: right;">+4</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="umf-container">
+<div style="grid-column: 1; grid-row: 1;">
+            <span class="label">
+                <span class="umf-silica">SiO<sub>2</sub></span>:
+                <span class="umf-alumina">Al<sub>2</sub>O<sub>3</sub></span>
+            </span>
+            <br />
+<span class="stats-silica">9.22</span>
+        </div>
+<div style="grid-column: 2; grid-row: 1;">
+            <span class="label">
+                <span class="umf-primary">R<sub>2</sub>O</span>:
+                <span class="umf-secondary">RO</span>
+            </span>
+            <br />
+<span class="stats-primary">0.2</span>:
+            <span class="stats-secondary">0.8</span>
+        </div>
+<div style="grid-column: 3; grid-row: 1;">
+            <span class="label">LOI</span>
+            <br />
+<span class="stats-loi">13.8%</span>
+        </div>
+<div style="grid-column: 1; grid-row 2;">
+            <span class="label">Glass</span>
+            <table class="umf-glass">
+<tr>
+<td class="umf-silica"><span>SiO<sub>2</sub></span></td>
+<td>2.19</td>
+</tr>
+<tr>
+<td class="umf-alumina"><span>Al<sub>2</sub>O<sub>3</sub></span></td>
+<td>0.24</td>
+</tr>
+</table>
+</div>
+<div style="grid-column: 2; grid-row 2;">
+            <span class="label">Flux</span>
+            <table class="umf-flux">
+<tr>
+<td class="umf-primary"><span>Na<sub>2</sub>O</span></td>
+<td>0.08</td>
+</tr>
+<tr>
+<td class="umf-primary"><span>K<sub>2</sub>O</span></td>
+<td>0.12</td>
+</tr>
+<tr>
+<td class="umf-secondary"><span>MgO</span></td>
+<td>0.13</td>
+</tr>
+<tr>
+<td class="umf-secondary"><span>CaO</span></td>
+<td>0.67</td>
+</tr>
+</table>
+</div>
+<div style="grid-column: 3; grid-row 2;">
+            <span class="label">Other</span>
+            <table class="umf-other">
+<tr>
+<td><span>P<sub>2</sub>O<sub>5</sub></span></td>
+<td>0.014</td>
+</tr>
+<tr>
+<td><span>Fe<sub>2</sub>O<sub>3</sub></span></td>
+<td>0.016</td>
+</tr>
+<tr>
+<td><span>TiO<sub>2</sub></span></td>
+<td>0.002</td>
+</tr>
+<tr>
+<td><span>CuO</span></td>
+<td>0.129</td>
+</tr>
+</table>
+</div>
+</div>
+</div>
+<table>
+<thead>
+<tr>
+<th></th>
+<th style="text-align: right;"><a href="https://digitalfire.com/material/1023">Mikawa Feldspar</a></th>
+<th style="text-align: right;">Wood Ash</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>SiO2</td>
+<td style="text-align: right;">75.8</td>
+<td style="text-align: right;">14</td>
+</tr>
+<tr>
+<td>Al2O3</td>
+<td style="text-align: right;">13</td>
+<td style="text-align: right;">4</td>
+</tr>
+<tr>
+<td>Na2O</td>
+<td style="text-align: right;">2.84</td>
+<td style="text-align: right;">0.5</td>
+</tr>
+<tr>
+<td>K2O</td>
+<td style="text-align: right;">6.59</td>
+<td style="text-align: right;">1.5</td>
+</tr>
+<tr>
+<td>MgO</td>
+<td style="text-align: right;">0.05</td>
+<td style="text-align: right;">5</td>
+</tr>
+<tr>
+<td>CaO</td>
+<td style="text-align: right;">0.25</td>
+<td style="text-align: right;">36</td>
+</tr>
+<tr>
+<td>TiO2</td>
+<td style="text-align: right;">0.1</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr>
+<td>Fe2O3</td>
+<td style="text-align: right;">0.32</td>
+<td style="text-align: right;">2</td>
+</tr>
+<tr>
+<td>P2O5</td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;">2</td>
+</tr>
+<tr>
+<td>LOI</td>
+<td style="text-align: right;">0.59</td>
+<td style="text-align: right;">35</td>
+</tr>
+</tbody>
+</table>
+<p>There are various chemical analyses for Mikawa Feldspar online. I've lost my notes on where the wood ash analysis comes from, but it should be a good approximation. Wood ash varies greatly from species to species and tree to tree. Since the chemistry is not exact, I should keep my recipe simple and numbers inexact.</p>
+<p>This recipe itself is very pleasing. It's simple - there are only two ingredients and the ratio is 2:3. The glaze has lots of faults from a usability perspective though. It's high in flux meaning it likely leaches copper. Wood ash varies greatly so the glaze will be inconsistent from batch to batch. But the final fired appearance is pleasing and the glaze is easy to prepare. Despite its technical faults, I think this is a great place to start learning about how glazes work.</p>
+<h3>Feldspar substitute</h3>
+<p>First, I'll need a substitute for Mikawa feldspar. Since Mikawa is a potash feldspar (more potassium than sodium), I'll replace it with Custer Feldspar, a common potash feldspar here in North America.</p>
+<p>Mikawa has significantly more silica than Custer Feldspar, but otherwise has no unusual chemistry. I can use a blend of Custer and silica. Mikawa is easily approximated with a blend of 3 parts Custer and 1 part silica. </p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th style="text-align: right;">Custer Feldspar</th>
+<th style="text-align: right;">75 Custer + 25 Silica</th>
+<th style="text-align: right;">Mikawa Feldspar</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>SiO2</td>
+<td style="text-align: right;">68.5</td>
+<td style="text-align: right;">76.38</td>
+<td style="text-align: right;">75.8</td>
+</tr>
+<tr>
+<td>Al2O3</td>
+<td style="text-align: right;">17</td>
+<td style="text-align: right;">12.86</td>
+<td style="text-align: right;">13</td>
+</tr>
+<tr>
+<td>Na2O</td>
+<td style="text-align: right;">3</td>
+<td style="text-align: right;">2.25</td>
+<td style="text-align: right;">2.84</td>
+</tr>
+<tr>
+<td>K2O</td>
+<td style="text-align: right;">10</td>
+<td style="text-align: right;">7.5</td>
+<td style="text-align: right;">6.59</td>
+</tr>
+<tr>
+<td>MgO</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0.05</td>
+</tr>
+<tr>
+<td>CaO</td>
+<td style="text-align: right;">0.3</td>
+<td style="text-align: right;">0.23</td>
+<td style="text-align: right;">0.25</td>
+</tr>
+<tr>
+<td>TiO2</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0.1</td>
+</tr>
+<tr>
+<td>Fe2O3</td>
+<td style="text-align: right;">0.1</td>
+<td style="text-align: right;">0.08</td>
+<td style="text-align: right;">0.32</td>
+</tr>
+<tr>
+<td>LOI</td>
+<td style="text-align: right;">0.3</td>
+<td style="text-align: right;">0.23</td>
+<td style="text-align: right;">0.59</td>
+</tr>
+</tbody>
+</table>
+<p>The substitution is almost shockingly easy. Potash feldspars across the world should have very similar chemical makeups because they are formed by the same geological processes, but even still, the substitution is very good. I wonder if the mining company that produces Mikawa Feldspar doesn't remove as much quartz during manufacturing.</p>
+<h3>Wood ash substitute</h3>
+<p>This calculation for wood ash is significantly more involved. However, wood ash varies from tree to tree and from season to season. I only need a rough approximation. I got the following by playing around in my glaze calculator with everything rounded off to the nearest 5.</p>
+<table>
+<thead>
+<tr>
+<th>Material</th>
+<th style="text-align: right;">Quantity</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><span>Whiting</span></td>
+<td style="text-align: right;">50</td>
+</tr>
+<tr>
+<td><span>Dolomite</span></td>
+<td style="text-align: right;">20</td>
+</tr>
+<tr>
+<td><span>Custer Feldspar</span></td>
+<td style="text-align: right;">15</td>
+</tr>
+<tr>
+<td><span>Yellow Ochre</span></td>
+<td style="text-align: right;">12</td>
+</tr>
+<tr>
+<td><span>Bone Ash</span></td>
+<td style="text-align: right;">3</td>
+</tr>
+</tbody>
+</table>
+<p>The main points of interest are </p>
+<ol>
+<li>Bone ash - There is 2% phosphorus oxide in the wood ash analysis. Bone ash contributes to phase separation and affects the translucency of the glaze, so a small quantity is needed.</li>
+<li>Yellow ochre - I use ochre to supply the iron content. The iron content, while small, will affect the glaze color and influence the shade of green. Since yellow ochre is a lightly processed clay, it should provide some impurities and make the glaze visually interesting. Ochre is also plastic, so it will help suspend the glaze as the recipe does not include any clay.</li>
+</ol>
+<p>This substitute also captures the fact that over a third of the weight of wood ash burns off in the kiln. This is important as the high loss on ignition (LOI) affects the calculation when feldspar is added.</p>
+<h2>Four parts feldspar, six parts ash</h2>
+<p>My approximation to the original recipe is thus:</p>
+<table>
+<thead>
+<tr>
+<th>Material</th>
+<th style="text-align: right;">Percentage</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Custer Feldspar</td>
+<td style="text-align: right;">40</td>
+</tr>
+<tr>
+<td>Whiting</td>
+<td style="text-align: right;">30</td>
+</tr>
+<tr>
+<td>Dolomite</td>
+<td style="text-align: right;">10</td>
+</tr>
+<tr>
+<td>Silica</td>
+<td style="text-align: right;">10</td>
+</tr>
+<tr>
+<td>Yellow Ochre</td>
+<td style="text-align: right;">8</td>
+</tr>
+<tr>
+<td>Bone Ash</td>
+<td style="text-align: right;">2</td>
+</tr>
+</tbody>
+</table>
+<p>Some numbers were again rounded after combining all the ingredients. The result should be a nice <em>cone 10</em> glaze. But I want a cone 6 glaze. To lower the melting temperature, I'll add some boron frit.</p>
+<h2>Lowering the melting temperature</h2>
+<p>This is not a general method for lowering the melting point of glazes. Since ash glazes are very high in flux (with very little clay and silica), they just need a small amount of boron to get the melt started earlier.</p>
+<p>I decided to replace the silica portion with Ferro Frit 3134, which is high in boron and silica. I used 10% because other synthetic ash glazes I found on <a href="../QA%20Mathematics%20Computer%20science/Glazy.html">Glazy</a> also use 10% FF 3134. Exactly which ingredient I replace doesn't matter as I can adjust after testing.</p>
+<p><a href="img/Oribe%200%20Silica.jpg"><img src="img/Oribe%200%20Silica.jpg" /></a></p>
+<table>
+<thead>
+<tr>
+<th>Material</th>
+<th style="text-align: right;">Percentage</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Custer Feldspar</td>
+<td style="text-align: right;">40</td>
+</tr>
+<tr>
+<td>Whiting</td>
+<td style="text-align: right;">30</td>
+</tr>
+<tr>
+<td>Dolomite</td>
+<td style="text-align: right;">10</td>
+</tr>
+<tr>
+<td>Ferro Frit 3134</td>
+<td style="text-align: right;">10</td>
+</tr>
+<tr>
+<td>Yellow Ochre</td>
+<td style="text-align: right;">8</td>
+</tr>
+<tr>
+<td>Bone Ash</td>
+<td style="text-align: right;">2</td>
+</tr>
+</tbody>
+</table>
+<p>The wonders of glaze chemistry has produced a wood ash glaze without the use of wood ash! This just goes to show that what's important is not the glaze material but what the chemical makeup of the glaze is.</p>
+<p>The glaze is matting where thin. Since the calcium content is so high, I want to think that this is a calcium matte or a magnesium matte. It's unlikely to be an alumina matte because the silica to alumina ratio is quite high (7.22).</p>
+<h2>Reducing the rivulets</h2>
+<p>The initial test has strong rivulets. This is a perfectly usable cone 6 ash glaze, but the effect is a little too strong for my taste. To reduce the rivulets, I'll move the glaze towards a typical glossy glaze.</p>
+<p>Wood ashes bead and drip because of the high RO flux (calcium and magnesium) and low silica. I removed 10% and 20% of the whiting and dolomite (calcium and magnesium sources) and replaced them with silica for the next two tests.</p>
+<table>
+<thead>
+<tr>
+<th>Material</th>
+<th style="text-align: right;">10% Silica</th>
+<th style="text-align: right;">20% Silica</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Custer Feldspar</td>
+<td style="text-align: right;">40</td>
+<td style="text-align: right;">40</td>
+</tr>
+<tr>
+<td>Whiting</td>
+<td style="text-align: right;">22.5</td>
+<td style="text-align: right;">15</td>
+</tr>
+<tr>
+<td>Dolomite</td>
+<td style="text-align: right;">7.5</td>
+<td style="text-align: right;">5</td>
+</tr>
+<tr>
+<td><span>Ferro Frit 3134</span></td>
+<td style="text-align: right;">10</td>
+<td style="text-align: right;">10</td>
+</tr>
+<tr>
+<td><span>Silica</span></td>
+<td style="text-align: right;">10</td>
+<td style="text-align: right;">20</td>
+</tr>
+<tr>
+<td>Yellow Ochre</td>
+<td style="text-align: right;">8</td>
+<td style="text-align: right;">8</td>
+</tr>
+<tr>
+<td>Bone Ash</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">2</td>
+</tr>
+</tbody>
+</table>
+<p><a href="img/Oribe%2010%20Silica.jpg"><img src="img/Oribe%2010%20Silica.jpg" /></a></p>
+<p>It looks like the amount of silica affects how strong the phase separation (caused by the phosphorus in the bone ash) is. The 20% silica recipe is almost completely opaque. Only the edges where the glaze is very thin are transparent.</p>
+<p>The 20% recipe is not very appealing to me, but perhaps it can be improved by reducing the bone ash content or removing it completely. Additionally, there is iron speckling that's only visible in the 20% silica recipe. Perhaps the additional silica decreased the solubility of iron or perhaps the iron is only easily visible when the glaze is opaque. It's strange because I sieved the glaze through a #100 mesh.</p>
+<p>I really love the 10% silica version of the glaze. It is full of character and has phase separation where thick, adding hues of blue to the dark green glaze. Perhaps the silica could be decreased slightly to strike a balance between rivulets and phase separation.</p>
+<p>I believe the phase separation is caused by phosphorus interacting with silica in the glaze. Because the glaze melts so intensely, it dissolves some of the silica in the body to create areas of higher and lower silica, resulting in areas with more or less blue.</p>
+<h2>Improving the application</h2>
+<p>I have a good looking glaze, but I want to improve the application properties. Yellow ochre is not very plastic, even less so than kaolin.</p>
+<p>I want to add more clay. Adding clay decreases the <a href="Silica-Alumina%20Ratio.html">Silica-Alumina Ratio</a> and means I need to add more silica to preserve the phase separation effect. Adding more silica just pushes the clay content back down. Since I'm working at cone 6, I have the option of using <span>Ferro Frit 3134</span>. It provides a high amount of flux with almost no alumina. I can increase the frit content, decrease the feldspar content, and use that extra alumina budget to add clay. I use ball clay because it is both highly plastic and has low alumina (relative to <span>Kaolin</span>).</p>
+<p>I also replace Custer with <a href="../QE%20Geology/Mahavir%20Feldspar.html">Mahavir Feldspar</a> because of Custer's production issues.</p>
+<table>
+<thead>
+<tr>
+<th>Material</th>
+<th style="text-align: right;">Percentage</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="../QE%20Geology/Mahavir%20Feldspar.html">Mahavir Feldspar</a></td>
+<td style="text-align: right;">25</td>
+</tr>
+<tr>
+<td><span>Ferro Frit 3134</span></td>
+<td style="text-align: right;">20</td>
+</tr>
+<tr>
+<td><span>Whiting</span></td>
+<td style="text-align: right;">20</td>
+</tr>
+<tr>
+<td><span>Dolomite</span></td>
+<td style="text-align: right;">8</td>
+</tr>
+<tr>
+<td><span>Bone Ash</span></td>
+<td style="text-align: right;">2</td>
+</tr>
+<tr>
+<td><span>Yellow Ochre</span></td>
+<td style="text-align: right;">10</td>
+</tr>
+<tr>
+<td><a href="../QE%20Geology/Kentucky%20OM4%20Ball%20Clay.html">Kentucky OM4 Ball Clay</a></td>
+<td style="text-align: right;">5</td>
+</tr>
+<tr>
+<td><span>Silica</span></td>
+<td style="text-align: right;">10</td>
+</tr>
+<tr>
+<td><span>Black Copper Oxide</span></td>
+<td style="text-align: right;">+4</td>
+</tr>
+</tbody>
+</table>
+<h2>Increasing the phase separation</h2>
+<table>
+<thead>
+<tr>
+<th>Material</th>
+<th>Low Silica</th>
+<th>High Silica</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="../QE%20Geology/Mahavir%20Feldspar.html">Mahavir Feldspar</a></td>
+<td>25</td>
+<td>25</td>
+</tr>
+<tr>
+<td><span>Ferro Frit 3134</span></td>
+<td>20</td>
+<td>20</td>
+</tr>
+<tr>
+<td><span>Whiting</span></td>
+<td>20</td>
+<td>10</td>
+</tr>
+<tr>
+<td><span>Dolomite</span></td>
+<td>8</td>
+<td>8</td>
+</tr>
+<tr>
+<td><span>Bone Ash</span></td>
+<td>2</td>
+<td>2</td>
+</tr>
+<tr>
+<td><span>Yellow Ochre</span></td>
+<td>10</td>
+<td>10</td>
+</tr>
+<tr>
+<td><a href="../QE%20Geology/Kentucky%20OM4%20Ball%20Clay.html">Kentucky OM4 Ball Clay</a></td>
+<td>5</td>
+<td>5</td>
+</tr>
+<tr>
+<td><span>Silica</span></td>
+<td>10</td>
+<td>10</td>
+</tr>
+<tr>
+<td><span>Black Copper Oxide</span></td>
+<td>+4</td>
+<td>+4</td>
+</tr>
+</tbody>
+</table>
+<table>
+<thead>
+<tr>
+<th>10 Silica</th>
+<th>12.5 Silica</th>
+<th>15 Silica</th>
+<th>17.5 Silica</th>
+<th>20 Silica</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="img/Oribe%20v3%2010.jpg"><img src="img/Oribe%20v3%2010.jpg" /></a></td>
+<td><a href="img/Oribe%20v3%2012.5.jpg"><img src="img/Oribe%20v3%2012.5.jpg" /></a></td>
+<td><a href="img/Oribe%20v3%2015.jpg"><img src="img/Oribe%20v3%2015.jpg" /></a></td>
+<td><a href="img/Oribe%20v3%2017.5.jpg"><img src="img/Oribe%20v3%2017.5.jpg" /></a></td>
+<td><a href="img/Oribe%20v3%2020.jpg"><img src="img/Oribe%20v3%2020.jpg" /></a></td>
+</tr>
+</tbody>
+</table>
+<p>Up until a silica-alumina ratio of 10, there is no phase separation on <a href="Midfire%20Hiiro.html">Midfire Hiiro</a> version 2. At around 10.7, there are streaks of bright blue where the glaze pools, and above 11, the glaze loses transparency.</p>
+<p>There was intense phase separation in the earlier test tile on commercial brown stoneware, but none on <span>Atmospheric Body 2</span> for the same glaze. I think this is because my clay bodies have little to no free silica particles. Since this glaze melts aggressively, it may be dissolving available silica from the clay itself, increasing phase separation when that happens.</p>
+<h2>Material substitution / decreasing melt flow</h2>
+<ul>
+<li>The 17.5% silica version of the previous test had the best silica-alumina ratio.</li>
+<li>There is a lot of free silica (17.5%) in the glaze recipe<ul>
+<li>I replaced the silica, whiting, and dolomite with wollastonite and talc</li>
+<li>This increases the overall clay content, further improving glaze suspension</li>
+</ul>
+</li>
+<li>I decreased the flux content<ul>
+<li>Less running makes glaze application easier</li>
+<li>I wonder if I can get better phosphorus blue with a thicker glaze</li>
+</ul>
+</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>Material</th>
+<th>High Flux</th>
+<th>Low Flux</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="../QE%20Geology/Mahavir%20Feldspar.html">Mahavir Feldspar</a></td>
+<td>28</td>
+<td>20</td>
+</tr>
+<tr>
+<td><span>Ferro Frit 3134</span></td>
+<td>22</td>
+<td>15</td>
+</tr>
+<tr>
+<td><a href="../QE%20Geology/Wollastonite.html">Wollastonite</a></td>
+<td>22</td>
+<td>15</td>
+</tr>
+<tr>
+<td><span>Talc</span></td>
+<td>6</td>
+<td>5</td>
+</tr>
+<tr>
+<td><span>Bone Ash</span></td>
+<td>2</td>
+<td>2</td>
+</tr>
+<tr>
+<td><span>Yellow Ochre</span></td>
+<td>11</td>
+<td>10</td>
+</tr>
+<tr>
+<td><a href="../QE%20Geology/Kentucky%20OM4%20Ball%20Clay.html">Kentucky OM4 Ball Clay</a></td>
+<td>5</td>
+<td>15</td>
+</tr>
+<tr>
+<td><span>Silica</span></td>
+<td>4</td>
+<td>18</td>
+</tr>
+</tbody>
+</table>
+<p>Surprisingly, both glazes had similar suspension properties. The increase in ball clay is offset by the decrease in Mahavir and Ochre.</p>
+<p>These were the blend results:</p>
+<table>
+<thead>
+<tr>
+<th>High Flux</th>
+<th>2-1 Blend</th>
+<th>1-2 Blend</th>
+<th>Low Flux</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="img/Oribe%20v4%201.jpg"><img src="img/Oribe%20v4%201.jpg" /></a></td>
+<td><a href="img/Oribe%20v4%202.jpg"><img src="img/Oribe%20v4%202.jpg" /></a></td>
+<td><a href="img/Oribe%20v4%203.jpg"><img src="img/Oribe%20v4%203.jpg" /></a></td>
+<td><a href="img/Oribe%20v4%204.jpg"><img src="img/Oribe%20v4%204.jpg" /></a></td>
+</tr>
+</tbody>
+</table>
+<p>The 2-1 blend has the most alumina and silica without going completely opaque. It looks like for the streaking effect to take place, the alumina content needs to be 0.25 molar or less. I think I prefer the high flux version, which has 0.21 molar alumina, because it pools a dark blue with bright blue streaks.</p>
+<p>The high flux glaze does phase separate intensely, but it is not visible in the picture. Where the glaze pooled on the catcher, it was bright green-blue. The most reasonable explanation is that the glaze is dissolving silica from the glaze body to phase separate. Since the test tile is made from a very low silica glaze, there is no phase separation on the tile itself.</p>
+<p><a href="img/Oribe%20V4%201%20Bowl.jpg"><img src="img/Oribe%20V4%201%20Bowl.jpg" /></a></p>
+<p>High melt on a bowl, oxidation firing that had a touch of reduction. A runny and mess of pinholes. This is one of the few things that turned out ok. Lots of defective pots that had blisters or fused to the cookies.</p>
+<h2>It's too runny</h2>
+<p>Of course the glaze goes haywire once I mix a 2 liter batch... The glaze is incredibly runny on full size pieces. It does phase separate and pools a very pretty blue, but on a different firing, the glaze ran off the piece, off the cookie, and onto the kiln shelf. Also interesting to note is that the more the glaze ran, the less phase separation there was. When fired too hot, the glaze goes completely translucent on the walls.</p>
+<p>The streaking is only possible with a low alumina content, so it seems impossible to create a glaze that doesn't run but also has that beautiful effect. Or is it? I think a low boron content can reduce the melt while also widening the firing range.</p>
+<ul>
+<li><a href="Silica-Alumina%20Ratio.html">Silica-Alumina Ratio</a> of around 10</li>
+<li>Alumina ratio of at most 0.25</li>
+<li>The 10% silica tile in test #2 had good streaking with 0.07 boron</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>Material</th>
+<th>0.06 Boron</th>
+<th>0.02 Boron</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><span>Ferro Frit 3134</span></td>
+<td>5</td>
+<td></td>
+</tr>
+<tr>
+<td><span>Ferro Frit 3110</span></td>
+<td>13</td>
+<td>17</td>
+</tr>
+<tr>
+<td><a href="../QE%20Geology/Mahavir%20Feldspar.html">Mahavir Feldspar</a></td>
+<td>40</td>
+<td>40</td>
+</tr>
+<tr>
+<td><span>Whiting</span></td>
+<td>13</td>
+<td>14</td>
+</tr>
+<tr>
+<td><span>Dolomite</span></td>
+<td>7</td>
+<td>7</td>
+</tr>
+<tr>
+<td><span>Yellow Ochre</span></td>
+<td>8</td>
+<td>8</td>
+</tr>
+<tr>
+<td><span>Silica</span></td>
+<td>14</td>
+<td>14</td>
+</tr>
+<tr>
+<td><span>Bone Ash</span></td>
+<td>+2</td>
+<td>+2</td>
+</tr>
+<tr>
+<td><span>Copper Carbonate</span></td>
+<td>+5</td>
+<td>+5</td>
+</tr>
+</tbody>
+</table>
+<p>Material Substitutions:</p>
+<ul>
+<li>Replacing Custer with Mahavir because Custer is no longer being mined</li>
+<li>Using copper carbonate instead of oxide because it suspends in the glaze better (I found some black oxide settling long before any other ingredients settled)</li>
+</ul>
+<hr />
+<p>Created <time datetime="2024-01-26">2024-01-26</time>. Updated <time datetime="2024-06-27">2024-06-27</time>. </p>
+<p><a href="../../index.html">Home</a> &gt; <a href="../Q%20Science.html">Q Science</a> &gt; <a href="QD%20Chemistry.html">QD Chemistry</a> &gt; Developing a Cone 6 Traditional Oribe Glaze</p></body>
+</html>

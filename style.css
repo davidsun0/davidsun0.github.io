@@ -1,0 +1,157 @@
+:root {
+    --accent-color-1: #88F;
+}
+
+html {
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+body {
+    font-family: sans-serif;
+    height: 100%;
+    overflow-x: hidden;
+    margin: 16px;
+}
+
+@media screen and (min-width:500px) {
+    body {
+        width: 50em;
+        margin: 24px;
+    }
+
+    h1, h2 {
+        margin-top: 1em;
+        margin-bottom: 1em;
+    }
+}
+
+table {
+    border-collapse: collapse;
+    margin-top: 16px;
+    margin-bottom: 16px;
+    /* Horizontal scroll for tables wider than the screen (i.e. vertical phones) */
+    display: block;
+    overflow: scroll;
+}
+
+th, td {
+    border: 1px solid #AAA;
+    padding: 0 8px 0 8px;
+}
+
+blockquote {
+    border-left: solid 4px var(--accent-color-1);
+    margin: 0;
+    padding-left: 16px;
+}
+
+img {
+    margin: 5%;
+    max-width: 90%;
+    height: auto;
+    border-radius: 4px;
+    /* subtle shadow */
+    filter: drop-shadow(0 0 32px #EEE);
+}
+
+figure {
+    margin: 8px;
+}
+
+@media screen and (min-width:500px) {
+    figure {
+        margin: 32px;
+    }
+}
+
+figure img {
+    margin: 0;
+    max-width: 100%;
+    width: 100%;
+}
+
+figcaption {
+    width: fit-content;
+    margin: 16px auto 16px auto;
+}
+
+/* UMF Widget */
+
+.umf-widget {
+    width: fit-content;
+    padding: 16px;
+    border-radius: 8px;
+    background: #FFF;
+    filter: drop-shadow(4px 4px 8px #888);
+    margin: 2em 0 2em 0;
+}
+
+.recipe table {
+    display: table;
+    width: 100%
+}
+
+.recipe th {
+    text-align: center;
+}
+
+.umf-container {
+    display: grid;
+    gap: 8px 24px;
+}
+
+.umf-heading {
+    font-size: 20px;
+    margin: 0 0 4px 0;
+}
+
+.label {
+    font-size: 12px;
+}
+
+.umf-container table {
+    margin: 0;
+}
+
+.umf-container th {
+    border: none;
+    padding: 0;
+}
+
+.umf-container td {
+    text-align: right;
+    border: none;
+    padding: 0;
+}
+
+.umf-container td:first-child {
+    text-align: left;
+    padding: 0 8px 0 0;
+}
+
+table .label {
+    font-size: 14px;
+}
+
+.umf-primary {
+    color: red;
+}
+
+.umf-secondary {
+    color: blue;
+}
+
+.umf-alumina {
+    color: green;
+}
+
+.umf-silica {
+    color: purple;
+}
+
+.umf-boria {
+    color: orange;
+}

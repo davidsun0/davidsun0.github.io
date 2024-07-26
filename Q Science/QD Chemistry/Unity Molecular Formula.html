@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Unity Molecular Formula</title>
+<link href="../../style.css" rel="stylesheet"/>
+<meta name="viewport" content="width=device-width"/>
+</head>
+<body>
+<h1>Unity Molecular Formula</h1>
+<p>The Unity Molecular Formula (UMF) is the primary chemical analysis of a glaze. It is a standard which accurately predicts a glaze's properties over a wide range of different chemical makeups.</p>
+<h2>Interpretation</h2>
+<p>The UMF is composed of three parts:</p>
+<h3>Flux Content</h3>
+<p>The UMF primarily describes the glaze in terms of flux. How much flux a glaze contains determines how aggressively it will melt. Ceramic glazes are mainly made of silica and alumina, two chemicals that melt at impossibly high temperatures. However, add enough flux and the resulting glass can run right off pots in the kiln.</p>
+<p>The degree of melt between puddle and powder is measured by the flux content. Silica and alumina content are measured against the total fluxes. How many molecules of silica are there for one molecule of flux? How many molecules of alumina? These two numbers are very good predictors of how aggressively a glaze will melt.</p>
+<p>The most common fluxes are sodium oxide (Na<sub>2</sub>O), potassium oxide (K<sub>2</sub>O), and calcium oxide (CaO). Different flux chemicals and different ratios can alter glaze properties like surface tension and interact with colorants.</p>
+<h3>Alumina</h3>
+<p><a href="Alumina%20%28Oxide%29.html">Alumina (Oxide)</a> determines how stiff a glaze is. From personal experience, this is how much movement you should expect to see based on the alumina content:</p>
+<ol>
+<li>&lt; 0.20: Very high glaze movement, extremely runny</li>
+<li>0.20 - 0.25: High glaze movement, but the fluidity of the glaze melt allows for unique crystallization effects</li>
+<li>0.3 - 0.4: Glaze melts enough to heal minor application issues, but still stiff enough to stick to the ware. Surface tension is high enough so glaze "gloops" on sharp angles. Most standard glazes live here.</li>
+<li>0.4 - 0.5: Glaze is rather stiff and shows little movement. Underglaze designs don't smudge and retains their edges</li>
+</ol>
+<h3>Silica</h3>
+<p>Silica, or more specifically the <a href="Silica-Alumina%20Ratio.html">Silica-Alumina Ratio</a>, determines surface quality of the glaze. The glossiest glazes have around 7 silica molecules for each alumina molecule. A ratio of 5 or less and the glaze gradually turns matte. Above 9, glazes also lose their gloss, but the texture of high silica mattes are quite different from alumina mattes. Some glaze effects, like crystallization and <span>Phase Separation</span>, only occur at certain ratios.</p>
+<h3>Limitations</h3>
+<p>The UMF assumes that the glaze is well melted and uniform. That means a glaze that melts aggressively and runs is closer to the chemical ideal than a stiff glaze that doesn't move much. Specialty glazes like "gloop glazes" and <a href="../../N%20Fine%20Arts/NK%20Decorative%20Arts/Shino%20Glazes.html">Shino Glazes</a> are low in flux. For these recipes the specific material brands and mixing processes have a larger impact on the fired glaze.</p>
+<h2>Calculation</h2>
+<ol>
+<li>Multiply each material's analysis by its weight percentage in the recipe</li>
+<li>Sum the weights for each oxide (discard loss on ignition)</li>
+<li>Convert to moles by dividing by the molar mass for each oxide</li>
+<li>Normalize the sum of the fluxes to 1 (unity)</li>
+</ol>
+<p>If you're familiar with chemistry, I hope this makes sense. If it doesn't, here's an example.</p>
+<h3>Example</h3>
+<p>I'll work out the UMF of the Leach 4-3-2-1 recipe by hand. Potash feldspar and kaolin have been replaced with specific brands. Silica and whiting are assumed to be pure.</p>
+<table>
+<thead>
+<tr>
+<th>Material</th>
+<th style="text-align: right;">Percentage</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><span>Custer Feldspar</span></td>
+<td style="text-align: right;">40</td>
+</tr>
+<tr>
+<td><span>Silica</span></td>
+<td style="text-align: right;">30</td>
+</tr>
+<tr>
+<td><span>Whiting</span></td>
+<td style="text-align: right;">20</td>
+</tr>
+<tr>
+<td><span>EP Kaolin</span></td>
+<td style="text-align: right;">10</td>
+</tr>
+</tbody>
+</table>
+<p>These are the chemical analyses. These can be found from the material manufacturer, online, or in the worst case, you'll have to send off a sample to a lab for testing. Material analyses are reported in weight percentage (wt%). For example, kaolin is approximately 45% silica by weight.</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>SiO<sub>2</sub></th>
+<th>Al<sub>2</sub>O<sub>3</sub></th>
+<th>Na<sub>2</sub>O</th>
+<th>K<sub>2</sub>O</th>
+<th>MgO</th>
+<th>CaO</th>
+<th>P<sub>2</sub>O<sub>5</sub></th>
+<th>Fe<sub>2</sub>O<sub>3</sub></th>
+<th>TiO<sub>2</sub></th>
+<th>LOI</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Custer Feldspar</td>
+<td>68.5</td>
+<td>17</td>
+<td>3</td>
+<td>10</td>
+<td></td>
+<td>0.3</td>
+<td></td>
+<td>0.1</td>
+<td></td>
+<td>1.1</td>
+</tr>
+<tr>
+<td>Silica</td>
+<td>100</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>Whiting</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td>56.1</td>
+<td></td>
+<td></td>
+<td></td>
+<td>43.9</td>
+</tr>
+<tr>
+<td>EP Kaolin</td>
+<td>45.72</td>
+<td>37.36</td>
+<td>0.07</td>
+<td>0.45</td>
+<td>0.1</td>
+<td>0.18</td>
+<td>0.26</td>
+<td>0.76</td>
+<td>0.38</td>
+<td>14.71</td>
+</tr>
+</tbody>
+</table>
+<h3>Weighted Sum</h3>
+<p>The first step is to multiply each ingredient's analysis by its percentage in the recipe.</p>
+<ul>
+<li>Since Custer Feldspar is 68.5% silica (SiO2) and the glaze is 40% Custer Feldspar, it contributes 0.40*0.685=0.274, or 27.4% of silica towards the total glaze.</li>
+<li>30% of the glaze is powdered silica, so that contributes another 30% of chemical silica towards the recipe.</li>
+<li>Whiting does not contain silica.</li>
+<li>EP Kaolin  is 45.72% silica and composes 10% of the recipe, so EPK  contributes 4.57% silica towards the total.</li>
+<li>The total percentage of silica in the overall glaze is 27.4+30+4.57=61.97%.</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>SiO<sub>2</sub></th>
+<th>Al<sub>2</sub>O<sub>3</sub></th>
+<th>Na<sub>2</sub>O</th>
+<th>K<sub>2</sub>O</th>
+<th>MgO</th>
+<th>CaO</th>
+<th>P<sub>2</sub>O<sub>5</sub></th>
+<th>Fe<sub>2</sub>O<sub>3</sub></th>
+<th>TiO<sub>2</sub></th>
+<th>LOI</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>40% Custer Feldspar</td>
+<td>27.4</td>
+<td>6.8</td>
+<td>1.2</td>
+<td>4</td>
+<td></td>
+<td>0.12</td>
+<td></td>
+<td>0.04</td>
+<td></td>
+<td>0.44</td>
+</tr>
+<tr>
+<td>30% Silica</td>
+<td>30</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>20% Whiting</td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td></td>
+<td>11.22</td>
+<td></td>
+<td></td>
+<td></td>
+<td>8.78</td>
+</tr>
+<tr>
+<td>10% EP Kaolin</td>
+<td>4.57</td>
+<td>3.74</td>
+<td>Trace</td>
+<td>0.05</td>
+<td>0.01</td>
+<td>0.02</td>
+<td>0.03</td>
+<td>0.08</td>
+<td>0.04</td>
+<td>1.47</td>
+</tr>
+<tr>
+<td>Sum</td>
+<td>61.97</td>
+<td>10.54</td>
+<td>1.2</td>
+<td>4.05</td>
+<td>0.01</td>
+<td>11.36</td>
+<td>0.03</td>
+<td>0.12</td>
+<td>0.04</td>
+<td>10.69</td>
+</tr>
+</tbody>
+</table>
+<h3>Loss on Ignition</h3>
+<p>Loss on ignition (LOI) represents how much of a material's weight is burned off in the kiln. For example, the mineral whiting is (theoretically) pure calcium carbonate, CaCO<sub>3</sub>. When fired in a kiln, it decomposes into CaO and CO<sub>2</sub>. The CO<sub>2</sub>, carbon dioxide, is released as gas. Since CaCO<sub>3</sub> is 43.9% CO<sub>2</sub> by weight, we say that whiting has an LOI of 43.9%.</p>
+<p>Materials may release carbon dioxide, water, sulfur, or any range of gases when fired. These are all grouped into LOI.</p>
+<p>Here, we see that the glaze has a LOI of 10.69%. This means a little more than 10% of the glaze's weight is burned away during firing. This number won't be part of the UMF calculation, but is still useful information. For example, if your glaze has bubbles or blisters, you might be able to fix the problem by using materials with a lower LOI.</p>
+<p>From now on, we can disregard the LOI as it does not represent a chemical in the final glaze.</p>
+<h3>Molar Amount</h3>
+<p>Next, we convert weights to moles. By dividing the weight of each oxide by the weight of the molecule, we can find out (relatively) how many molecules there are.</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>SiO<sub>2</sub></th>
+<th>Al<sub>2</sub>O<sub>3</sub></th>
+<th>Na<sub>2</sub>O</th>
+<th>K<sub>2</sub>O</th>
+<th>MgO</th>
+<th>CaO</th>
+<th>P<sub>2</sub>O<sub>5</sub></th>
+<th>Fe<sub>2</sub>O<sub>3</sub></th>
+<th>TiO<sub>2</sub></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Weight</td>
+<td>61.97</td>
+<td>10.54</td>
+<td>1.2</td>
+<td>4.05</td>
+<td>0.01</td>
+<td>11.36</td>
+<td>0.03</td>
+<td>0.12</td>
+<td>0.04</td>
+</tr>
+<tr>
+<td>Oxide Mass</td>
+<td>60.09</td>
+<td>101.96</td>
+<td>61.98</td>
+<td>94.20</td>
+<td>40.31</td>
+<td>56.08</td>
+<td>141.88</td>
+<td>159.70</td>
+<td>79.87</td>
+</tr>
+<tr>
+<td>Molecules</td>
+<td>1.031</td>
+<td>0.103</td>
+<td>0.019</td>
+<td>0.043</td>
+<td>0.000</td>
+<td>0.203</td>
+<td>0.000</td>
+<td>0.001</td>
+<td>0.001</td>
+</tr>
+</tbody>
+</table>
+<p>To find the molar mass of an oxide, use the periodic table. SiO2 has one silicon atom (28.09) and two oxygen atoms (2*16.00=32.00) for a total of 60.09. We divide a mass of 61.97 (there are no units because this is a percentage) by 60.09 to get a value of 1.031. This value is also relative, but now instead of being relative by weight, it is relative by number of molecules. We will normalize these molecular numbers in the next step.</p>
+<h3>Unity</h3>
+<p>The unity in "Unity Molecular Formula" refers to how the fluxes are set to unity (sum to one) in the molecular analysis.</p>
+<p>In this example, our fluxes are Na2O, K2O, MgO, and CaO. Currently, the proportion of these fluxes add to 0.019+0.043+0.000+0.203=0.265. If we want them to sum to one, we can divide the amounts of all the oxides by 0.265.</p>
+<p>For example, if we divide 1.031 molecules of silica by 0.265, we get 3.89. That means, for every one molecule of flux, we have on average 3.89 molecules of silica. This number will become more meaningful when compared to other glazes. Looking at my recipes, I have some with as little silica as 1.1 or as much as 5.1.</p>
+<p>Here is the final UMF calculation for this glaze:</p>
+<table>
+<thead>
+<tr>
+<th>SiO<sub>2</sub></th>
+<th>Al<sub>2</sub>O<sub>3</sub></th>
+<th>Na<sub>2</sub>O</th>
+<th>K<sub>2</sub>O</th>
+<th>MgO</th>
+<th>CaO</th>
+<th>P<sub>2</sub>O<sub>5</sub></th>
+<th>Fe<sub>2</sub>O<sub>3</sub></th>
+<th>TiO<sub>2</sub></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>3.89</td>
+<td>0.39</td>
+<td>0.07</td>
+<td>0.16</td>
+<td>0.001</td>
+<td>0.76</td>
+<td>0.001</td>
+<td>0.003</td>
+<td>0.002</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>Additional calculations:<ul>
+<li>The <a href="Silica-Alumina%20Ratio.html">Silica-Alumina Ratio</a> is 3.89/0.39=10.2</li>
+<li>The R<sub>2</sub>O to RO flux ratio is 0.23:0.76<ul>
+<li>R<sub>2</sub>O (Na<sub>2</sub>O, K<sub>2</sub>O) is 0.07+0.16=0.23</li>
+<li>RO (MgO, CaO) is 0.001+0.76=0.76</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h2>Alumina as Unity</h2>
+<p>In some contexts, alumina is set to unity instead of the fluxes. This is useful when the flux levels are low, i.e. in clay bodies. But in my opinion it's useless to describe clays in terms of chemical analyses. There is no melting so a recipe can only be understood by looking at its ingredients.</p>
+<h2>Extended Unity Molecular Formula</h2>
+<p>Rose Katz has done research assigning ceramic oxides traditionally labeled "other" a label of flux, slilica-like or alumina-like. The talk <a href="https://www.youtube.com/watch?v=RWYCKFVy3qo">Colorforms - NCECA 2019</a> discusses the results.</p>
+<p>I don't know how applicable these results are as the colorant oxides are added in proportions well beyond a typical glaze. By the time a metal like cobalt, for example, can have a noticeable effect on the glaze chemistry, it is well into leaching territory.</p>
+<hr />
+<p>Created <time datetime="2024-03-25">2024-03-25</time>. Updated <time datetime="2024-07-15">2024-07-15</time>. </p>
+<p><a href="../../index.html">Home</a> &gt; <a href="../Q%20Science.html">Q Science</a> &gt; <a href="QD%20Chemistry.html">QD Chemistry</a> &gt; Unity Molecular Formula</p></body>
+</html>

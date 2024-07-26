@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Zen Haiku Database</title>
+<link href="../../style.css" rel="stylesheet"/>
+<meta name="viewport" content="width=device-width"/>
+</head>
+<body>
+<h1>Zen Haiku Database</h1>
+<p>The <a href="https://horicun.moo.jp/contents/haiku/">Zen Haiku Database</a> (<em>lit.</em> Complete Haiku Database)contains a database of all 631134233006543551770782470703125 possible 5-7-5 poems.</p>
+<ul>
+<li>For example, さみだれを　あつめてはやし　もがみがわ is haiku No. 77016092317948049706681803472219</li>
+</ul>
+<h2>Haiku Encoding</h2>
+<p>Rather than storing all possible haikus, the Haiku Database can be thought of Japanese text into a numerical value. There are a few limitations on the encoding:</p>
+<ul>
+<li>Only 17 character haikus are allowed (omitting haikus with <a href="Jiamari%20and%20Jitarazu.html">Jiamari and Jitarazu</a>)</li>
+<li>Multi-character syllables are not properly encoded (this is fixed in <a href="https://horicun.moo.jp/contents/haiku2/index.html">Version 2</a>)</li>
+<li>The numbering starts at one</li>
+</ul>
+<p>The encoding works like this:</p>
+<ul>
+<li>Each kana is assigned a value with あ starting at 0 and ん being 84</li>
+<li>The haiku is treated as a base 85 number and converted to decimal<ul>
+<li>The ordering is lexicographic, not the <a href="https://en.wikipedia.org/wiki/Hiragana_(Unicode_block)">Hiragana Unicode block</a> order.</li>
+</ul>
+</li>
+<li>Add one to the haiku number for 1-based indexing</li>
+</ul>
+<p>Since there are 85 possible kana and 17 positions, there are 85\^17 = 6.3*10<sup>32</sup> total haiku.</p>
+<ul>
+<li>あああああ　あああああああ　あああああ is haiku #1.</li>
+<li>あああああ　あああああああ　あああいあ is haiku #86.<ul>
+<li>(10)<sub>85</sub> = (85)<sub>10</sub>, and 1 is added to get 86.</li>
+</ul>
+</li>
+</ul>
+<h2>Notes</h2>
+<ul>
+<li>In a <a href="https://horicun.hatenablog.com/entry/2024/01/11/225616">blog post</a> the creator says that the inspiration came from <a href="https://www.youtube.com/watch?v=n4KcpTBBZjQ">G Panpanda's routine on a poet writing haikus</a> by brute forcing every syllable combination</li>
+<li>The website design is a reference to <span>Abe Hiroshi's Homepage</span></li>
+<li><a href="https://en.wikipedia.org/wiki/The_Nine_Billion_Names_of_God">The Nine Billion Names of God by Arthur C Clarke</a> also features using a computer to list every combination of symbols</li>
+</ul>
+<hr />
+<p>Created <time datetime="2024-04-03">2024-04-03</time>. </p>
+<p><a href="../../index.html">Home</a> &gt; <a href="../P%20Language%20Literature.html">P Language Literature</a> &gt; <a href="PL%20East%20Asian%20language%20and%20literature.html">PL East Asian language and literature</a> &gt; Zen Haiku Database</p></body>
+</html>
